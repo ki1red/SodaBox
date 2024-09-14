@@ -1,0 +1,47 @@
+﻿@model IEnumerable<SodaBox.DataAccess.Entities.Drink>
+
+<div class="drinks-grid">
+    @foreach (var drink in Model)
+    {
+        <div class="drink-item">
+            <img src="@drink.imagePath" alt="@drink.name" />
+            <p>@drink.name</p>
+            <p>@drink.price руб.</p>
+
+            @if (drink.quantity > 0)
+            {
+                <button id="selectButton-@drink.id" onclick="selectDrink(@drink.id)">Выбрать</button>
+            }
+            else
+            {
+                <button disabled>Закончился</button>
+            }
+        </div>
+    }
+</div>
+
+<script>
+    function selectDrink(drinkId) {
+        var button = document.getElementById('selectButton-' + drinkId);
+        button.innerText = 'Выбрано';
+        button.disabled = true;
+        // Логика добавления в корзину может быть добавлена сюда
+    }
+</script>
+
+<style>
+    .drinks-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr); /* 4 напитка в строке */
+        gap: 20px;
+    }
+
+    .drink-item {
+        text-align: center;
+    }
+
+        .drink-item img {
+            width: 100px;
+            height: 100px;
+        }
+</style>

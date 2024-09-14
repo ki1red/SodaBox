@@ -1,7 +1,13 @@
+using Microsoft.EntityFrameworkCore;
+using SodaBox.DataAccess;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext<VendingMachineContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("FirstConnection")));
+Console.WriteLine(builder.Configuration.GetConnectionString("FirstConnection"));
 
 var app = builder.Build();
 
@@ -18,6 +24,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Store}/{action=Index}/{id?}");
 
 app.Run();
