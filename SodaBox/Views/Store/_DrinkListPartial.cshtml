@@ -1,4 +1,5 @@
-﻿@model IEnumerable<SodaBox.DataAccess.Entities.Drink>
+﻿
+@model IEnumerable<SodaBox.DataAccess.Entities.Drink>
 
 <div class="drinks-grid">
     @foreach (var drink in Model)
@@ -10,15 +11,20 @@
             <p>Остаток: @drink.quantity</p>
             @if (drink.quantity > 0)
             {
-                <button data-drink-id="@drink.id" onclick="addToCart(@drink.id)">Выбрать</button>
+                <button data-drink-id="@drink.id" class="button available" onclick="addToCart(@drink.id)">
+                    <span class="button-text">Выбрать</span>
+                </button>
             }
             else
             {
-                <button disabled>Закончилось</button>
+                <button class="button disabled" disabled>
+                    <span class="button-text">Закончилось</span>
+                </button>
             }
         </div>
     }
 </div>
+
 
 <script>
     function addToCart(drinkId) {

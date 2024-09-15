@@ -17,11 +17,20 @@
         @foreach (var item in Model.cartItems)
         {
             <tr>
-                <td>@item.drink.name</td>
                 <td>
-                    <button onclick="updateCart(@item.drink.id, Math.max(@item.quantity - 1, 0))" @if (item.quantity <= 1) { <text>disabled</text> }>-</button>
+                    <img src="@Url.Content($"~/{item.drink.imagePath}")" alt="@item.drink.name" style="width: 100px; height: 150px; margin-right: 10px;" />
+                    @item.drink.name
+                </td>
+                <td>
+                    <button onclick="updateCart(@item.drink.id, Math.max(@item.quantity - 1, 0))" @if (item.quantity <= 1)
+                    {
+                        <text>disabled</text>
+                    }>-</button>
                     @item.quantity
-                    <button onclick="updateCart(@item.drink.id, Math.min(@item.quantity + 1, @item.drink.quantity))" @if (item.quantity >= item.drink.quantity) { <text>disabled</text> }>+</button>
+                    <button onclick="updateCart(@item.drink.id, Math.min(@item.quantity + 1, @item.drink.quantity))" @if (item.quantity >= item.drink.quantity)
+                    {
+                        <text>disabled</text>
+                    }>+</button>
                 </td>
 
                 <td>@item.drink.price руб.</td>
@@ -35,16 +44,8 @@
 
 <button class="btn btn-primary">Оплатить</button>
 
-<script>
-    function updateCart(drinkId, quantity) {
-        fetch("/Store/UpdateCart", {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: `drinkId=${drinkId}&quantity=${quantity}`
-        }).then(() => {
-            location.reload(); // Перезагрузка страницы
-        });
-    }
-</script>
+@section Scripts {
+    <script src="~/js/bucket.js"></script>
+}
+
+<link rel="stylesheet" href="~/css/bucket.css">

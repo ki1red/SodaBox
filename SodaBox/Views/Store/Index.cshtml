@@ -1,4 +1,5 @@
-﻿@model StoreViewModel
+﻿<!-- Index.cshtml -->
+@model StoreViewModel
 
 <h1>Газированные напитки</h1>
 
@@ -37,49 +38,6 @@
     @await Html.PartialAsync("_DrinkListPartial", Model.drinks)
 </div>
 
-<script>
-    function updateMinPriceValue(value) {
-        document.getElementById('minPriceValue').innerText = value;
-        filterDrinks();  // Обновление списка напитков при изменении
-    }
-
-    function updateMaxPriceValue(value) {
-        document.getElementById('maxPriceValue').innerText = value;
-        filterDrinks();  // Обновление списка напитков при изменении
-    }
-
-    function filterDrinks() {
-        var minPrice = document.getElementById('minPrice').value;
-        var maxPrice = document.getElementById('maxPrice').value;
-        var brandId = document.getElementById('brandFilter').value;
-
-        var url = `/Store/FilterDrinks?minPrice=${minPrice}&maxPrice=${maxPrice}&brandId=${brandId}`;
-
-        fetch(url)
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('drinksContainer').innerHTML = data;
-            })
-            .catch(error => console.error('Ошибка:', error));
-    }
-
-    function checkSelectedDrinks() {
-        fetch('/Store/GetCart')
-            .then(response => response.json())
-            .then(cart => {
-                var selectedDrinks = cart.map(item => item.drink.id);
-
-                selectedDrinks.forEach(function (drinkId) {
-                    var button = document.querySelector(`button[data-drink-id='${drinkId}']`);
-                    if (button) {
-                        button.innerText = "Выбрано";
-                        button.disabled = true;
-                    }
-                });
-            })
-            .catch(error => console.error('Ошибка:', error));
-    }
-
-    // Вызов функции после загрузки страницы
-    document.addEventListener("DOMContentLoaded", checkSelectedDrinks);
-</script>
+<!-- Подключение стилей и скриптов -->
+<link rel="stylesheet" href="~/css/index.css">
+<script src="~/js/index.js"></script>
