@@ -4,28 +4,43 @@
     @foreach (var drink in Model)
     {
         <div class="drink-item">
-            <img src="@drink.imagePath" alt="@drink.name" />
-            <p>@drink.name</p>
-            <p>@drink.price руб.</p>
-
+            <img src="@Url.Content($"~/{drink.imagePath}")" alt="@drink.name" />
+            <h3>@drink.name</h3>
+            <p>Цена: @drink.price руб.</p>
+            <p>Остаток: @drink.quantity</p>
             @if (drink.quantity > 0)
             {
-                <button id="selectButton-@drink.id" onclick="selectDrink(@drink.id)">Выбрать</button>
+                <button data-drink-id="@drink.id" onclick="addToCart(@drink.id)">Выбрать</button>
             }
             else
             {
-                <button disabled>Закончился</button>
+                <button disabled>Закончилось</button>
             }
         </div>
     }
 </div>
 
 <script>
-    function selectDrink(drinkId) {
-        var button = document.getElementById('selectButton-' + drinkId);
-        button.innerText = 'Выбрано';
-        button.disabled = true;
-        // Логика добавления в корзину может быть добавлена сюда
+    function addToCart(drinkId) {
+        fetch("/Store/AddToCart", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: `drinkId=${drinkId}`
+        }).then(response => {
+            if (response.ok) {
+                console.log("Напиток добавлен в корзину");
+                // Обновите состояние кнопки здесь
+                var button = document.querySelector(`button[data-drink-id='${drinkId}']`);
+                if (button) {
+                    button.innerText = "Выбрано";
+                    button.disabled = true;
+                }
+            } else {
+                console.error("Ошибка при добавлении напитка");
+            }
+        });
     }
 </script>
 

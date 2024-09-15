@@ -3,24 +3,25 @@ using SodaBox.DataAccess;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<VendingMachineContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("FirstConnection")));
-Console.WriteLine(builder.Configuration.GetConnectionString("FirstConnection"));
+
+// Включаем сессии
+builder.Services.AddSession();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
 }
 app.UseStaticFiles();
-
 app.UseRouting();
-
 app.UseAuthorization();
+
+// Добавляем сессии в конвейер
+app.UseSession();
 
 app.MapControllerRoute(
     name: "default",

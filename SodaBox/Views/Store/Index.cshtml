@@ -9,7 +9,7 @@
         <option value="">Все бренды</option>
         @foreach (var brand in Model.brands)
         {
-                <option value="@brand.id">@brand.name</option>
+            <option value="@brand.id">@brand.name</option>
         }
     </select>
 </div>
@@ -25,6 +25,11 @@
     <label for="maxPrice">Максимальная цена:</label>
     <input type="range" id="maxPrice" name="maxPrice" min="0" max="500" value="500" oninput="updateMaxPriceValue(this.value)">
     <span id="maxPriceValue">500</span> руб.
+</div>
+
+<!-- Добавить кнопку корзины в правую верхнюю часть страницы -->
+<div style="text-align: right; margin-bottom: 20px;">
+    <a href="/Store/Bucket" class="btn btn-primary">Корзина</a>
 </div>
 
 <!-- Контейнер для отображения напитков -->
@@ -57,4 +62,24 @@
             })
             .catch(error => console.error('Ошибка:', error));
     }
+
+    function checkSelectedDrinks() {
+        fetch('/Store/GetCart')
+            .then(response => response.json())
+            .then(cart => {
+                var selectedDrinks = cart.map(item => item.drink.id);
+
+                selectedDrinks.forEach(function (drinkId) {
+                    var button = document.querySelector(`button[data-drink-id='${drinkId}']`);
+                    if (button) {
+                        button.innerText = "Выбрано";
+                        button.disabled = true;
+                    }
+                });
+            })
+            .catch(error => console.error('Ошибка:', error));
+    }
+
+    // Вызов функции после загрузки страницы
+    document.addEventListener("DOMContentLoaded", checkSelectedDrinks);
 </script>

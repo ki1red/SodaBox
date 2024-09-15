@@ -1,0 +1,50 @@
+﻿@model BucketViewModel
+
+<h1>Оформление заказа</h1>
+
+<a href="/Store/Index" class="btn btn-secondary">← Назад к напиткам</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Напиток</th>
+            <th>Количество</th>
+            <th>Цена</th>
+            <th>Итог</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.cartItems)
+        {
+            <tr>
+                <td>@item.drink.name</td>
+                <td>
+                    <button onclick="updateCart(@item.drink.id, Math.max(@item.quantity - 1, 0))" @if (item.quantity <= 1) { <text>disabled</text> }>-</button>
+                    @item.quantity
+                    <button onclick="updateCart(@item.drink.id, Math.min(@item.quantity + 1, @item.drink.quantity))" @if (item.quantity >= item.drink.quantity) { <text>disabled</text> }>+</button>
+                </td>
+
+                <td>@item.drink.price руб.</td>
+                <td>@(item.drink.price * item.quantity) руб.</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<p>Общая сумма: @Model.cartItems.Sum(item => item.drink.price * item.quantity) руб.</p>
+
+<button class="btn btn-primary">Оплатить</button>
+
+<script>
+    function updateCart(drinkId, quantity) {
+        fetch("/Store/UpdateCart", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: `drinkId=${drinkId}&quantity=${quantity}`
+        }).then(() => {
+            location.reload(); // Перезагрузка страницы
+        });
+    }
+</script>
