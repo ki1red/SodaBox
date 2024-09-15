@@ -11,19 +11,21 @@
             <p>Остаток: @drink.quantity</p>
             @if (drink.quantity > 0)
             {
-                <button data-drink-id="@drink.id" class="button available" onclick="addToCart(@drink.id)">
+                <button data-drink-id="@drink.id" class="button selectdrink-available" onclick="addToCart(@drink.id)">
                     <span class="button-text">Выбрать</span>
                 </button>
             }
             else
             {
-                <button class="button disabled" disabled>
+                <button class="button selectdrink-disabled" disabled>
                     <span class="button-text">Закончилось</span>
                 </button>
             }
         </div>
     }
 </div>
+
+<!--
 
 
 <script>
@@ -49,20 +51,4 @@
         });
     }
 </script>
-
-<style>
-    .drinks-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr); /* 4 напитка в строке */
-        gap: 20px;
-    }
-
-    .drink-item {
-        text-align: center;
-    }
-
-        .drink-item img {
-            width: 100px;
-            height: 100px;
-        }
-</style>
+-->

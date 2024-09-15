@@ -1,8 +1,8 @@
 ﻿// bucket.js
 
 function updateCart(drinkId, quantity) {
-    fetch("/Store/UpdateCart", {
-        method: "POST",
+    fetch("/Store/ReloadCart", {
+        method: "PUT",
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
         },

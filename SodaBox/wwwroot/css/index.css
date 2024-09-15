@@ -11,10 +11,10 @@
     padding: 10px;
 }
 
-    .drink-item img {
-        width: 200px; /* Ширина изображения */
-        height: 300px; /* Высота изображения */
-    }
+.drink-item img {
+    width: 200px; /* Ширина изображения */
+    height: 300px; /* Высота изображения */
+}
 
 /* Основной стиль кнопки */
 .button {
@@ -23,40 +23,55 @@
     border: 2px solid transparent;
     border-radius: 5px;
     font-size: 16px;
-    font-weight: bold;
     text-align: center;
     cursor: pointer;
     transition: background-color 0.3s, border-color 0.3s;
 }
 
-    /* Кнопка доступна */
-    .button.available {
-        background-color: yellow;
-        border-color: yellow;
-        color: black;
-    }
-
-        .button.available:hover {
-            background-color: lightyellow;
-        }
-
-    /* Кнопка выбрана */
-    .button.selected {
-        background-color: lime;
-        border-color: lime;
-        color: black;
-    }
-
-    /* Кнопка недоступна */
-    .button.disabled {
-        background-color: lightgray;
-        border-color: lightgray;
-        color: darkgray;
-        cursor: not-allowed;
-    }
-
 /* Общее оформление текста внутри кнопки */
 .button-text {
     display: inline-block;
     vertical-align: middle;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+}
+
+/* Кнопка выбора доступна */
+.button.selectdrink-available {
+    background-color: yellow;
+    border-color: yellow;
+    color: black;
+}
+
+.button.selectdrink-available:hover {
+    background-color: lightyellow;
+}
+
+/* Кнопка выбора выбрана */
+.button.selectdrink-selected {
+    background-color: lime;
+    border-color: lime;
+    color: black;
+}
+
+/* Кнопка выбора недоступна */
+.button.selectdrink-disabled {
+    background-color: lightgray;
+    border-color: lightgray;
+    color: darkgray;
+    cursor: not-allowed;
+}
+
+/* Кнопка корзины недоступна */
+.button.bucket-disabled {
+    background-color: lightgray;
+    border-color: lightgray;
+    color: darkgray;
+    cursor: not-allowed;
+}
+
+/* Кнопка корзины доступна и выбрана */
+.button.bucket-selected {
+    background-color: lime;
+    border-color: lime;
+    color: black;
 }

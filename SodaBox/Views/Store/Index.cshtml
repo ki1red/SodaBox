@@ -30,7 +30,10 @@
 
 <!-- Добавить кнопку корзины в правую верхнюю часть страницы -->
 <div style="text-align: right; margin-bottom: 20px;">
-    <a href="/Store/Bucket" class="btn btn-primary">Корзина</a>
+    <button id="cartButton" class="button bucket-disabled">
+        <span class="button-text">Не выбрано</span>
+    </button>
+    <a href="/Store/Bucket" style="display:none;" id="cartLink">Корзина</a>
 </div>
 
 <!-- Контейнер для отображения напитков -->

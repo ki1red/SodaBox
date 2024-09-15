@@ -62,7 +62,7 @@ public class StoreController : Controller
 
     // Добавление напитка в корзину
     [HttpPost]
-    public IActionResult AddToCart(int drinkId)
+    public IActionResult AddOrRemoveToCart(int drinkId)
     {
         var drink = _context.drinks.Find(drinkId);
         if (drink == null)
@@ -79,7 +79,12 @@ public class StoreController : Controller
             Console.WriteLine($"Добавляем напиток в корзину: {drink.name}");
             cart.Add(new CartItem { drink = drink, quantity = 1 });
         }
-
+        else
+        {
+            Console.WriteLine($"Удаляем напиток из корзины: {drink.name}");
+            cart.Remove(cartItem);
+        }
+        
         SaveCart(cart);
 
         return Ok();
@@ -98,8 +103,8 @@ public class StoreController : Controller
     }
 
     // API для обновления количества напитков в корзине
-    [HttpPost]
-    public IActionResult UpdateCart(int drinkId, int quantity)
+    [HttpPut]
+    public IActionResult ReloadCart(int drinkId, int quantity)
     {
         var cart = GetCart();
 
