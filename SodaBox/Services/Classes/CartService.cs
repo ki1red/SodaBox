@@ -27,7 +27,7 @@ namespace SodaBox.Services.Classes
             var cartJson = _httpContextAccessor.HttpContext.Session.GetString(_cartSessionKey);
             return cartJson == null ? new List<CartItem>() : JsonSerializer.Deserialize<List<CartItem>>(cartJson);
         }
-
+        int i = 0;
         public void SaveCart(List<CartItem> cart)
         {
             var cartJson = JsonSerializer.Serialize(cart);
@@ -36,8 +36,8 @@ namespace SodaBox.Services.Classes
         public bool AddToCart(Drink drink)
         {
             var cart = GetCart();
-            var cartItem = cart.FirstOrDefault(item => item.drink == drink);
-
+            var cartItem = cart.FirstOrDefault(item => item.drink.id == drink.id);
+            
             if (cartItem != null)
                 return false;
 
@@ -51,14 +51,14 @@ namespace SodaBox.Services.Classes
         public bool RemoveFromCart(Drink drink)
         {
             var cart = GetCart();
-            var cartItem = cart.FirstOrDefault(item => item.drink == drink);
+            var cartItem = cart.FirstOrDefault(item => item.drink.id == drink.id);
 
             if (cartItem == null)
                 return false;
 
             if (!cart.Remove(cartItem))
                 return false;
-            
+
             SaveCart(cart);
 
             return true;
@@ -67,7 +67,7 @@ namespace SodaBox.Services.Classes
         public bool IsHasCart(Drink drink)
         {
             var cart = GetCart();
-            if (cart.FirstOrDefault(item => item.drink == drink) == null)
+            if (cart.FirstOrDefault(item => item.drink.id == drink.id) == null)
                 return false;
             else 
                 return true;
@@ -82,7 +82,9 @@ namespace SodaBox.Services.Classes
                 return false;
             
             cartItem.quantity = newQuantity;
+
             SaveCart(cart);
+
             return true;
         }
     }

@@ -97,11 +97,15 @@ function updateBucketButton() {
                 cartButton.classList.remove('bucket-selected');
                 cartButton.classList.add('bucket-disabled');
                 cartButton.querySelector('.button-text').textContent = 'Не выбрано';
+                //cartButton.onclick = null;
                 console.log(`Бакет опустел`);
             } else {
                 cartButton.classList.remove('bucket-disabled');
                 cartButton.classList.add('bucket-selected');
                 cartButton.querySelector('.button-text').textContent = `Выбрано: ${selectedCount}`;
+                //cartButton.onclick = function () {
+                //    window.location.href = '/Bucket/Bucket'; // Обработчик события
+                //};
                 console.log(`Бакет содержит: ${selectedCount}`);
             }
         })
