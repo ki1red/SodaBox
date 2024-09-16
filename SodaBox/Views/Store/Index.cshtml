@@ -15,7 +15,7 @@
     </select>
 </div>
 
-<!-- Ползунки для минимальной и максимальной цены -->
+<!-- Ползунки для минимальной и максимальной цены 
 <div>
     <label for="minPrice">Минимальная цена:</label>
     <input type="range" id="minPrice" name="minPrice" min="0" max="500" value="0" oninput="updateMinPriceValue(this.value)">
@@ -26,6 +26,15 @@
     <label for="maxPrice">Максимальная цена:</label>
     <input type="range" id="maxPrice" name="maxPrice" min="0" max="500" value="500" oninput="updateMaxPriceValue(this.value)">
     <span id="maxPriceValue">500</span> руб.
+</div>
+-->
+
+<div>
+    <label for="slider">Ценовой диапазон:</label>
+    <div id="slider" style="margin-bottom: 10px;"></div>
+    <span id="minPriceValue">0</span> руб. — <span id="maxPriceValue">500</span> руб.
+    <input type="hidden" id="minPrice" value="0" />
+    <input type="hidden" id="maxPrice" value="500" />
 </div>
 
 <!-- Добавить кнопку корзины в правую верхнюю часть страницы -->
@@ -44,3 +53,6 @@
 <!-- Подключение стилей и скриптов -->
 <link rel="stylesheet" href="~/css/index.css">
 <script src="~/js/index.js"></script>
+
+<script src="~/js/nouislider-bundle.js"></script>
+

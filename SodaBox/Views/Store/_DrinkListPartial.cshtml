@@ -24,31 +24,3 @@
         </div>
     }
 </div>
-
-<!--
-
-
-<script>
-    function addToCart(drinkId) {
-        fetch("/Store/AddToCart", {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: `drinkId=${drinkId}`
-        }).then(response => {
-            if (response.ok) {
-                console.log("Напиток добавлен в корзину");
-                // Обновите состояние кнопки здесь
-                var button = document.querySelector(`button[data-drink-id='${drinkId}']`);
-                if (button) {
-                    button.innerText = "Выбрано";
-                    button.disabled = true;
-                }
-            } else {
-                console.error("Ошибка при добавлении напитка");
-            }
-        });
-    }
-</script>
--->
