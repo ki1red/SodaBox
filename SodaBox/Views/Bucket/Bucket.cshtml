@@ -40,12 +40,11 @@
     </tbody>
 </table>
 
-<p>Общая сумма: @Model.cartItems.Sum(item => item.drink.price * item.quantity) руб.</p>
+<p>Общая сумма: @Model.sum руб.</p>
 
-<button class="btn btn-primary">Оплатить</button>
+<button class="btn btn-primary">Оплата</button>
 
-@section Scripts {
-    <script src="~/js/bucket.js"></script>
-}
+<script src="~/js/bucket.js"></script>
+
 
 <link rel="stylesheet" href="~/css/bucket.css">

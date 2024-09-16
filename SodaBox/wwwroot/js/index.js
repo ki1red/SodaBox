@@ -58,7 +58,7 @@ function checkSelectedDrinks() {
 
 function addToCart(drinkId) {
     fetch("/Store/AddOrRemoveToCart", {
-        method: "POST",
+        method: "PUT",
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
         },

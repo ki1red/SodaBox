@@ -8,15 +8,17 @@ using System.Text.Json;
 using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using SodaBox.Services.Interfaces;
 
 public class StoreController : Controller
 {
     private readonly VendingMachineContext _context;
-    private const string CartSessionKey = "Cart";
+    private readonly ICartService _cartService;
 
-    public StoreController(VendingMachineContext context)
+    public StoreController(VendingMachineContext context, ICartService cartService)
     {
         _context = context;
+        _cartService = cartService;
     }
 
     // Главная страница магазина
@@ -61,7 +63,7 @@ public class StoreController : Controller
     }
 
     // Добавление напитка в корзину
-    [HttpPost]
+    [HttpPut]
     public IActionResult AddOrRemoveToCart(int drinkId)
     {
         var drink = _context.drinks.Find(drinkId);
@@ -71,78 +73,25 @@ public class StoreController : Controller
             return NotFound();
         }
 
-        var cart = GetCart();
-
-        var cartItem = cart.FirstOrDefault(item => item.drink.id == drinkId);
-        if (cartItem == null)
+        if (!_cartService.IsHasCart(drink))
         {
             Console.WriteLine($"Добавляем напиток в корзину: {drink.name}");
-            cart.Add(new CartItem { drink = drink, quantity = 1 });
+            _cartService.AddToCart(drink);
         }
         else
         {
             Console.WriteLine($"Удаляем напиток из корзины: {drink.name}");
-            cart.Remove(cartItem);
+            _cartService.RemoveFromCart(drink);
         }
-        
-        SaveCart(cart);
 
         return Ok();
-    }
-
-    // Страница корзины
-    public IActionResult Bucket()
-    {
-        var cart = GetCart();
-        var viewModel = new BucketViewModel
-        {
-            cartItems = cart
-        };
-
-        return View(viewModel);
-    }
-
-    // API для обновления количества напитков в корзине
-    [HttpPut]
-    public IActionResult ReloadCart(int drinkId, int quantity)
-    {
-        var cart = GetCart();
-
-        var cartItem = cart.FirstOrDefault(item => item.drink.id == drinkId);
-        if (cartItem != null)
-        {
-            if (quantity < 1)
-            {
-                cart.Remove(cartItem);
-            }
-            else
-            {
-                cartItem.quantity = quantity;
-            }
-        }
-
-        SaveCart(cart);
-
-        return RedirectToAction("Bucket");
     }
 
     [HttpGet]
     public IActionResult GetCartJson()
     {
-        var cart = GetCart();
+        var cart = _cartService.GetCart();
         return Json(cart);
     }
 
-    private List<CartItem> GetCart()
-    {
-        var cartJson = HttpContext.Session.GetString(CartSessionKey);
-        return cartJson == null ? new List<CartItem>() : JsonSerializer.Deserialize<List<CartItem>>(cartJson);
-    }
-
-
-    private void SaveCart(List<CartItem> cart)
-    {
-        var cartJson = JsonSerializer.Serialize(cart);
-        HttpContext.Session.SetString(CartSessionKey, cartJson);
-    }
 }

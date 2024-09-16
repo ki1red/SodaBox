@@ -1,0 +1,8 @@
+﻿/* Пример стилей для страницы оплаты */
+form div {
+    margin-bottom: 10px;
+}
+
+button[type="button"] {
+    margin: 0 5px;
+}

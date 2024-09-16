@@ -1,0 +1,48 @@
+﻿@model PaymentViewModel
+
+<h1>Оплата</h1>
+
+<p>Общая сумма: @Model.TotalAmount руб.</p>
+
+<form id="paymentForm" method="post" action="/Store/ProcessPayment">
+    <div>
+        <label>Монеты номиналом 1 рубль:</label>
+        <button type="button" onclick="changeCoins(1, -1)">-</button>
+        <span id="coin1">@Model.Coins[1]</span>
+        <button type="button" onclick="changeCoins(1, 1)">+</button>
+    </div>
+    <div>
+        <label>Монеты номиналом 2 рубля:</label>
+        <button type="button" onclick="changeCoins(2, -1)">-</button>
+        <span id="coin2">@Model.Coins[2]</span>
+        <button type="button" onclick="changeCoins(2, 1)">+</button>
+    </div>
+    <div>
+        <label>Монеты номиналом 5 рублей:</label>
+        <button type="button" onclick="changeCoins(5, -1)">-</button>
+        <span id="coin5">@Model.Coins[5]</span>
+        <button type="button" onclick="changeCoins(5, 1)">+</button>
+    </div>
+    <div>
+        <label>Монеты номиналом 10 рублей:</label>
+        <button type="button" onclick="changeCoins(10, -1)">-</button>
+        <span id="coin10">@Model.Coins[10]</span>
+        <button type="button" onclick="changeCoins(10, 1)">+</button>
+    </div>
+
+    <p>Итоговая сумма: <span id="currentAmount">@Model.CurrentAmount</span> руб.</p>
+    <p>Сдача: <span id="change">@Model.Change</span> руб.</p>
+
+    <button type="submit" id="payButton" @if (!Model.CanPay)
+    {
+        <text>disabled</text>
+    }>Оплатить</button>
+</form>
+
+<a href="/Store/Bucket" class="btn btn-secondary">← Вернуться в корзину</a>
+
+@section Scripts {
+    <script src="~/js/payment.js"></script>
+}
+
+<link rel="stylesheet" href="~/css/payment.css">

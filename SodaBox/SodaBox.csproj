@@ -7,7 +7,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\PaymentController.cs" />
+    <Compile Remove="Models\PaymentViewModel.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="Views\Payment\Payment.cshtml" />
+    <Content Remove="wwwroot\css\payment.css" />
+    <Content Remove="wwwroot\js\payment.js" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Views\Config\" />
+    <Folder Include="Views\Payment\" />
   </ItemGroup>
 
   <ItemGroup>
