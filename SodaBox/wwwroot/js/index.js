@@ -78,8 +78,7 @@ function addToCart(drinkId) {
                     button.querySelector('.button-text').textContent = 'Выбрать';
                 }
             }
-
-            updateBucketButton();  // Обновляем кнопку корзины после изменения корзины
+            checkSelectedDrinks();
         } else {
             console.error("Ошибка при добавлении/удалении напитка");
         }
@@ -95,24 +94,19 @@ function updateBucketButton() {
             var cartButton = document.getElementById('cartButton');
 
             if (selectedCount === 0) {
-                cartButton.classList.remove('button-selected');
-                cartButton.classList.add('button-disabled');
+                cartButton.classList.remove('bucket-selected');
+                cartButton.classList.add('bucket-disabled');
                 cartButton.querySelector('.button-text').textContent = 'Не выбрано';
                 console.log(`Бакет опустел`);
             } else {
-                cartButton.classList.remove('button-disabled');
-                cartButton.classList.add('button-selected');
+                cartButton.classList.remove('bucket-disabled');
+                cartButton.classList.add('bucket-selected');
                 cartButton.querySelector('.button-text').textContent = `Выбрано: ${selectedCount}`;
                 console.log(`Бакет содержит: ${selectedCount}`);
             }
         })
         .catch(error => console.error('Ошибка:', error));
 }
-
-document.addEventListener("DOMContentLoaded", () => {
-    checkSelectedDrinks();
-    updateBucketButton();  // Обновляем кнопку корзины при загрузке страницы
-});
 
 // Инициализация слайдера
 document.addEventListener("DOMContentLoaded", () => {
