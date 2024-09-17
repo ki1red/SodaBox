@@ -1,0 +1,14 @@
+﻿@{
+    ViewBag.Title = "Выдача сдачи";
+}
+
+<h1>Выдача сдачи</h1>
+
+<p>Ваша сдача составляет:</p>
+<ul id="changeList"></ul>
+
+<a href="/Store/Index" class="btn btn-secondary">Вернуться к напиткам</a>
+
+<div id="changeAmount" data-amount="@ViewBag.changeAmount" style="display: none;"></div>
+
+<script src="~/js/change.js"></script>

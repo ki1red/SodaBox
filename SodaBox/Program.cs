@@ -11,6 +11,7 @@ builder.Services.AddDbContext<VendingMachineContext>(options =>
 
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddSingleton<ICartService, CartService>();
+builder.Services.AddSingleton<ITransactionService, TransactionService>();
 
 // ¬ключаем сессии
 builder.Services.AddSession(options =>

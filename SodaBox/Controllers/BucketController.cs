@@ -10,13 +10,25 @@ namespace SodaBox.Controllers
     public class BucketController : Controller
     {
         private readonly ICartService _cartService;
-        public BucketController(ICartService cartService)
+        private readonly ITransactionService _transactionService;
+        public BucketController(ICartService cartService, ITransactionService transactionService)
         {
             _cartService = cartService;
+            _transactionService = transactionService;
         }
         // Страница корзины
         public IActionResult Bucket()
         {
+            // Если оплата проведена, корзина не может быть доступна
+            if (_transactionService.IsTransactionCompleted())
+            {
+                return RedirectToAction("Index", "Store");
+            }
+
+            Response.Headers.Append("Cache-Control", "no-store");
+            Response.Headers.Append("Pragma", "no-cache");
+            Response.Headers.Append("Expires", "0");
+
             var cart = _cartService.GetCart();
             var viewModel = new BucketViewModel
             {
@@ -26,17 +38,6 @@ namespace SodaBox.Controllers
 
             return View(viewModel);
         }
-
-        //[HttpPost]
-        //public IActionResult GoToPayment()
-        //{
-        //    var cart = GetCart();
-        //    var totalAmount = cart.Sum(item => item.drink.price * item.quantity);
-
-        //    HttpContext.Session.SetDecimal("TotalAmount", totalAmount);
-
-        //    return RedirectToAction("Payment", "Payment");
-        //}
 
         // API для обновления количества напитков в корзине
         [HttpPut]

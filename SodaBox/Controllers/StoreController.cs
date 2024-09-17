@@ -9,21 +9,26 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using SodaBox.Services.Interfaces;
+using SodaBox.Services.Classes;
 
 public class StoreController : Controller
 {
     private readonly VendingMachineContext _context;
     private readonly ICartService _cartService;
+    private readonly ITransactionService _transactionService;
 
-    public StoreController(VendingMachineContext context, ICartService cartService)
+    public StoreController(VendingMachineContext context, ICartService cartService, ITransactionService transactionService)
     {
         _context = context;
         _cartService = cartService;
+        _transactionService = transactionService;
     }
 
     // Главная страница магазина
     public async Task<IActionResult> Index()
     {
+        _transactionService.ResetTransaction();
+
         var brands = await _context.brands.ToListAsync();
         var drinks = await _context.drinks.Include(d => d.brand).ToListAsync(); // Получаем все напитки
 

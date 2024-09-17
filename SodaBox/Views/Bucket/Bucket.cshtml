@@ -42,7 +42,7 @@
 
 <p>Общая сумма: @Model.sum руб.</p>
 
-<button class="btn btn-primary" onclick="window.location.href = '/Payment/Payment'">Оплата</button>
+<button class="btn btn-primary" onclick="window.location.href = '/Payment/Payment?sum=' + @Model.sum">Оплата</button>
 
 <script src="~/js/bucket.js"></script>
 

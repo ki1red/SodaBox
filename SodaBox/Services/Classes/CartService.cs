@@ -8,8 +8,8 @@ namespace SodaBox.Services.Classes
 {
     public class CartService : ICartService
     {
-        private string _cartSessionKey;
-        private IHttpContextAccessor _httpContextAccessor;
+        private readonly string _cartSessionKey;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         public CartService(IHttpContextAccessor? httpContextAccessor = null, string? cartSessionKey = null)
         {
             if (httpContextAccessor == null)
@@ -27,7 +27,7 @@ namespace SodaBox.Services.Classes
             var cartJson = _httpContextAccessor.HttpContext.Session.GetString(_cartSessionKey);
             return cartJson == null ? new List<CartItem>() : JsonSerializer.Deserialize<List<CartItem>>(cartJson);
         }
-        int i = 0;
+        
         public void SaveCart(List<CartItem> cart)
         {
             var cartJson = JsonSerializer.Serialize(cart);

@@ -5,9 +5,7 @@
 function updateCoin(denomination, increment) {
     const coinCountElement = document.getElementById(`coin-count-${denomination}`);
     let currentCount = parseInt(coinCountElement.textContent) || 0;
-    console.log(currentCount);
     currentCount += increment;
-    console.log(currentCount);
 
     if (currentCount >= 0) {
         coinCountElement.textContent = currentCount;
@@ -34,7 +32,9 @@ function checkCanPay(currentAmount) {
 
     if (currentAmount >= totalAmount) {
         payButton.disabled = false;
+        payButton.href = '/Payment/Change?amount=' + (currentAmount - totalAmount);
     } else {
         payButton.disabled = true;
+        payButton.removeAttribute('href');
     }
 }

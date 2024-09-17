@@ -2,7 +2,7 @@
 
 <h1>Оплата заказа</h1>
 
-<p>Необходимо оплатить: @Model.totalAmount руб.</p>
+<p>Необходимо оплатить: <span id="totalAmount">@Model.totalAmount</span> руб.</p>
 
 <table>
     <thead>
@@ -19,9 +19,8 @@
                 <td>
                     <button onclick="updateCoin(@coin.Key, -1)">-</button>
                     <span id="coin-count-@coin.Key">@coin.Value</span>
-                    <button onclick="updateCoin(@coin.Key,+1)">+</button>
+                    <button onclick="updateCoin(@coin.Key, +1)">+</button>
                 </td>
-
             </tr>
         }
     </tbody>
@@ -29,7 +28,7 @@
 
 <p>Внесено: <span id="currentAmount">@Model.currentAmount</span> руб.</p>
 
-<button id="payButton" class="btn btn-primary" disabled>Оплатить</button>
+<a id="payButton" class="btn btn-primary" href="" role="button" aria-disabled="true">Оплатить</a>
 
 <a href="/Store/Index" class="btn btn-secondary">← Вернуться к напиткам</a>
 

@@ -23,15 +23,9 @@
     <input type="hidden" id="maxPrice" value="500" />
 </div>
 
-<!-- Кнопка корзины
+<!-- Кнопка корзины -->
 <div style="text-align: right; margin-bottom: 20px;">
-    <a href="/Bucket/Bucket" id="cartButton" class="button bucket-disabled">
-        <span class="button-text">Не выбрано</span>
-    </a>
-</div>-->
-
-<div style="text-align: right; margin-bottom: 20px;">
-    <button id="cartButton" class="button bucket-disabled" onclick="window.location.href = '/Bucket/Bucket'">
+    <button id="cartButton" class="button bucket-disabled" data-disabled="true" onclick="handleCartButtonClick()">
         <span class="button-text">Не выбрано</span>
     </button>
 </div>
