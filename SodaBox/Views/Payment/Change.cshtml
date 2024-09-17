@@ -1,14 +1,18 @@
-﻿@{
-    ViewBag.Title = "Выдача сдачи";
-}
+﻿@model ChangeViewModel
 
 <h1>Выдача сдачи</h1>
 
 <p>Ваша сдача составляет:</p>
 <ul id="changeList"></ul>
 
-<a href="/Store/Index" class="btn btn-secondary">Вернуться к напиткам</a>
+<div style="text-align: right; margin-bottom: 20px;">
+    <button id="storeButton" class="button back" onclick="window.location.href = '/Store/Index'">
+        <span class="button-text">Каталог</span>
+    </button>
+</div>
 
-<div id="changeAmount" data-amount="@ViewBag.changeAmount" style="display: none;"></div>
+
+<div id="changeAmount" data-amount="@Model.change" style="display: none;"></div>
 
 <script src="~/js/change.js"></script>
+<link rel="stylesheet" href="~/css/payment.css">

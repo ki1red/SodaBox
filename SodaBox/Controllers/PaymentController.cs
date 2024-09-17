@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using SodaBox.Models;
 using SodaBox.Services.Classes;
 using SodaBox.Services.Interfaces;
@@ -17,6 +18,11 @@ public class PaymentController : Controller
         {
             return RedirectToAction("Bucket", "Bucket");
         }
+        else if (_transactionService.IsTransactionCompleted() &&
+            _transactionService.completeSum != null)
+        {
+            return RedirectToAction("Change", "Payment");
+        }
 
         Response.Headers.Append("Cache-Control", "no-store");
         Response.Headers.Append("Pragma", "no-cache");
@@ -30,15 +36,28 @@ public class PaymentController : Controller
     }
 
     [HttpPost]
-    public IActionResult Pay(PaymentViewModel model)
+    public IActionResult Pay([FromBody] int sum)
     {
-        if (model.isCanPay)
-        {
-            // Логика обработки успешной оплаты
-            _transactionService.CompleteTransaction(model.currentAmount);
-            return RedirectToAction("Change");
-        }
-        return View("Payment", model);
+        _transactionService.CompleteTransaction(sum);
+        return Ok(new { redirectUrl = Url.Action("Change", "Payment") });
     }
 
+    public IActionResult Change()
+    {
+        if (!_transactionService.IsTransactionCompleted())
+        {
+            return RedirectToAction("Index", "Store");
+        }
+
+        Response.Headers.Append("Cache-Control", "no-store");
+        Response.Headers.Append("Pragma", "no-cache");
+        Response.Headers.Append("Expires", "0");
+
+        var viewModel = new ChangeViewModel
+        {
+            totalAmount = _transactionService.requestSum.Value,
+            currentAmount = _transactionService.completeSum.Value
+        };
+        return View(viewModel);
+    }
 }

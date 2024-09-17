@@ -34,6 +34,7 @@
 </div>
 
 <div style="text-align: right; margin-bottom: 20px;">
+    @Html.AntiForgeryToken()
     <button id="payButton" class="button next-disabled" data-disabled="true" onclick="handlePayButtonClick()">
         <span class="button-text">Оплатить</span>
     </button>
@@ -43,5 +44,5 @@
 <link rel="stylesheet" href="~/css/payment.css">
 
 <script>
-    var sum = @Model.currentAmount;
+    var needAmount = @Model.totalAmount;
 </script>

@@ -4,29 +4,29 @@
     const denominations = [10, 5, 2, 1]; // Номиналы монет
     const changeList = document.getElementById("changeList");
 
-    function calculateChange(amount, denominations) {
-        const result = {};
-
-        for (let denom of denominations) {
-            if (amount >= denom) {
-                result[denom] = Math.floor(amount / denom);
-                amount %= denom;
-            }
-        }
-
-        return result;
-    }
-
-    function displayChange(change) {
-        changeList.innerHTML = ''; // Очистить контейнер
-
-        for (let denom of Object.keys(change)) {
-            const listItem = document.createElement("li");
-            listItem.textContent = `${denom} руб. - ${change[denom]} штуки`;
-            changeList.appendChild(listItem);
-        }
-    }
-
     const change = calculateChange(amount, denominations);
     displayChange(change);
 });
+
+function calculateChange(amount, denominations) {
+    const result = {};
+
+    for (let denom of denominations) {
+        if (amount >= denom) {
+            result[denom] = Math.floor(amount / denom);
+            amount %= denom;
+        }
+    }
+
+    return result;
+}
+
+function displayChange(change) {
+    changeList.innerHTML = ''; // Очистить контейнер
+
+    for (let denom of Object.keys(change)) {
+        const listItem = document.createElement("li");
+        listItem.textContent = `${denom} руб. - ${change[denom]} штуки`;
+        changeList.appendChild(listItem);
+    }
+}
