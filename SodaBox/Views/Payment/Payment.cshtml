@@ -1,48 +1,37 @@
 ﻿@model PaymentViewModel
 
-<h1>Оплата</h1>
+<h1>Оплата заказа</h1>
 
-<p>Общая сумма: @Model.TotalAmount руб.</p>
+<p>Необходимо оплатить: @Model.totalAmount руб.</p>
 
-<form id="paymentForm" method="post" action="/Store/ProcessPayment">
-    <div>
-        <label>Монеты номиналом 1 рубль:</label>
-        <button type="button" onclick="changeCoins(1, -1)">-</button>
-        <span id="coin1">@Model.Coins[1]</span>
-        <button type="button" onclick="changeCoins(1, 1)">+</button>
-    </div>
-    <div>
-        <label>Монеты номиналом 2 рубля:</label>
-        <button type="button" onclick="changeCoins(2, -1)">-</button>
-        <span id="coin2">@Model.Coins[2]</span>
-        <button type="button" onclick="changeCoins(2, 1)">+</button>
-    </div>
-    <div>
-        <label>Монеты номиналом 5 рублей:</label>
-        <button type="button" onclick="changeCoins(5, -1)">-</button>
-        <span id="coin5">@Model.Coins[5]</span>
-        <button type="button" onclick="changeCoins(5, 1)">+</button>
-    </div>
-    <div>
-        <label>Монеты номиналом 10 рублей:</label>
-        <button type="button" onclick="changeCoins(10, -1)">-</button>
-        <span id="coin10">@Model.Coins[10]</span>
-        <button type="button" onclick="changeCoins(10, 1)">+</button>
-    </div>
+<table>
+    <thead>
+        <tr>
+            <th>Номинал (рубли)</th>
+            <th>Количество</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var coin in Model.coins)
+        {
+            <tr>
+                <td>@coin.Key руб.</td>
+                <td>
+                    <button onclick="updateCoin(@coin.Key, -1)">-</button>
+                    <span id="coin-count-@coin.Key">@coin.Value</span>
+                    <button onclick="updateCoin(@coin.Key,+1)">+</button>
+                </td>
 
-    <p>Итоговая сумма: <span id="currentAmount">@Model.CurrentAmount</span> руб.</p>
-    <p>Сдача: <span id="change">@Model.Change</span> руб.</p>
+            </tr>
+        }
+    </tbody>
+</table>
 
-    <button type="submit" id="payButton" @if (!Model.CanPay)
-    {
-        <text>disabled</text>
-    }>Оплатить</button>
-</form>
+<p>Внесено: <span id="currentAmount">@Model.currentAmount</span> руб.</p>
 
-<a href="/Store/Bucket" class="btn btn-secondary">← Вернуться в корзину</a>
+<button id="payButton" class="btn btn-primary" disabled>Оплатить</button>
 
-@section Scripts {
-    <script src="~/js/payment.js"></script>
-}
+<a href="/Store/Index" class="btn btn-secondary">← Вернуться к напиткам</a>
 
+<script src="~/js/payment.js"></script>
 <link rel="stylesheet" href="~/css/payment.css">

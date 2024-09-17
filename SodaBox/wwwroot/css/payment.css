@@ -1,8 +1,24 @@
-﻿/* Пример стилей для страницы оплаты */
-form div {
-    margin-bottom: 10px;
+﻿table {
+    width: 100%;
+    margin-bottom: 20px;
 }
 
-button[type="button"] {
-    margin: 0 5px;
+td, th {
+    padding: 10px;
+    text-align: center;
 }
+
+button {
+    padding: 5px 10px;
+    margin: 5px;
+}
+
+#payButton {
+    background-color: lightgray;
+    color: darkgray;
+}
+
+    #payButton:enabled {
+        background-color: limegreen;
+        color: white;
+    }

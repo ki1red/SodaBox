@@ -1,19 +1,40 @@
-﻿function changeCoins(denomination, change) {
-    const coinElement = document.getElementById(`coin${denomination}`);
-    const currentAmountElement = document.getElementById('currentAmount');
-    const changeElement = document.getElementById('change');
-    const payButton = document.getElementById('payButton');
+﻿document.addEventListener("DOMContentLoaded", function () {
+    updateCurrentAmount();
+});
 
-    let currentCoins = parseInt(coinElement.textContent);
-    currentCoins += change;
-    coinElement.textContent = currentCoins;
+function updateCoin(denomination, increment) {
+    const coinCountElement = document.getElementById(`coin-count-${denomination}`);
+    let currentCount = parseInt(coinCountElement.textContent) || 0;
+    console.log(currentCount);
+    currentCount += increment;
+    console.log(currentCount);
 
-    const totalAmount = parseFloat(document.getElementById('totalAmount').textContent);
-    const currentAmount = Array.from(document.querySelectorAll('[id^=coin]'))
-        .reduce((acc, el) => acc + parseInt(el.textContent) * parseInt(el.id.replace('coin', '')), 0);
+    if (currentCount >= 0) {
+        coinCountElement.textContent = currentCount;
+        updateCurrentAmount();
+    }
+}
 
-    currentAmountElement.textContent = currentAmount;
-    changeElement.textContent = currentAmount - totalAmount;
+function updateCurrentAmount() {
+    let total = 0;
+    const coinElements = document.querySelectorAll("span[id^='coin-count-']");
+    coinElements.forEach(element => {
+        const denomination = parseInt(element.id.replace('coin-count-', ''));
+        const count = parseInt(element.textContent) || 0;
+        total += denomination * count;
+    });
 
-    payButton.disabled = currentAmount < totalAmount;
+    document.getElementById("currentAmount").textContent = total;
+    checkCanPay(total);
+}
+
+function checkCanPay(currentAmount) {
+    const totalAmount = parseInt(document.querySelector("#totalAmount").textContent);
+    const payButton = document.getElementById("payButton");
+
+    if (currentAmount >= totalAmount) {
+        payButton.disabled = false;
+    } else {
+        payButton.disabled = true;
+    }
 }
