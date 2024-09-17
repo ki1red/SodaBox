@@ -1,7 +1,4 @@
 ﻿// index.js
-
-var slider = document.getElementById('slider');
-
 function updateMinPriceValue(value) {
     document.getElementById('minPriceValue').innerText = value;
     filterDrinks();  // Обновление списка напитков при изменении

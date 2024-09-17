@@ -27,7 +27,16 @@ public class StoreController : Controller
     // Главная страница магазина
     public async Task<IActionResult> Index()
     {
-        _transactionService.ResetTransaction();
+        //if (_transactionService.IsTransactionCompleted() &&
+        //    _transactionService.requestSum != null &&
+        //    _transactionService.completeSum != null)
+        //{
+        //    Response.Headers.Append("Cache-Control", "no-store");
+        //    Response.Headers.Append("Pragma", "no-cache");
+        //    Response.Headers.Append("Expires", "0");
+        //}
+
+        _transactionService.EndTransaction();
 
         var brands = await _context.brands.ToListAsync();
         var drinks = await _context.drinks.Include(d => d.brand).ToListAsync(); // Получаем все напитки

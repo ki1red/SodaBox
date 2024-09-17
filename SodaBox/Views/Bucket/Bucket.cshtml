@@ -2,7 +2,9 @@
 
 <h1>Оформление заказа</h1>
 
-<a href="/Store/Index" class="btn btn-secondary">← Назад к напиткам</a>
+<script>
+    var sum = @Model.sum;
+</script>
 
 <table class="table">
     <thead>
@@ -42,7 +44,18 @@
 
 <p>Общая сумма: @Model.sum руб.</p>
 
-<button class="btn btn-primary" onclick="window.location.href = '/Payment/Payment?sum=' + @Model.sum">Оплата</button>
+<div style="text-align: right; margin-bottom: 20px;">
+    <button id="storeButton" class="button back" onclick="window.location.href = '/Store/Index'">
+        <span class="button-text">Вернуться</span>
+    </button>
+</div>
+
+<div style="text-align: right; margin-bottom: 20px;">
+    @Html.AntiForgeryToken()
+    <button id="payButton" class="button next-disabled" data-disabled="true" onclick="handlePayButtonClick()">
+        <span class="button-text">Оплата</span>
+    </button>
+</div>
 
 <script src="~/js/bucket.js"></script>
 

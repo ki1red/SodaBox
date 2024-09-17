@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using SodaBox.DataAccess;
 using SodaBox.Services.Interfaces;
 using SodaBox.Models;
+using System;
 
 namespace SodaBox.Controllers
 {
@@ -19,10 +20,11 @@ namespace SodaBox.Controllers
         // Страница корзины
         public IActionResult Bucket()
         {
-            // Если оплата проведена, корзина не может быть доступна
+            // Если оплата проводится, корзина не может быть доступна
             if (_transactionService.IsTransactionCompleted())
             {
-                return RedirectToAction("Index", "Store");
+                if (_transactionService.completeSum != null)
+                    return RedirectToAction("Index", "Store");
             }
 
             Response.Headers.Append("Cache-Control", "no-store");
@@ -39,13 +41,26 @@ namespace SodaBox.Controllers
             return View(viewModel);
         }
 
-        // API для обновления количества напитков в корзине
+        
         [HttpPut]
         public IActionResult ReloadCart(int drinkId, int quantity)
         {
             _cartService.UpdateCart(drinkId, quantity);
 
             return Ok();
+        }
+
+        [HttpPost]
+        public IActionResult Payment([FromBody] int sum)
+        {
+            if (sum != _cartService.GetCart().Sum(item => item.drink.price * item.quantity))
+            {
+                return BadRequest("Invalid data");
+            }
+
+            _transactionService.StartTransaction(sum);
+
+            return Ok(new { redirectUrl = Url.Action("Payment", "Payment") });
         }
     }
 }

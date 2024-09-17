@@ -8,17 +8,38 @@ td, th {
     text-align: center;
 }
 
-button {
-    padding: 5px 10px;
-    margin: 5px;
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    border: 2px solid transparent;
+    border-radius: 5px;
+    font-size: 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s;
 }
 
-#payButton {
+.button-text {
+    display: inline-block;
+    vertical-align: middle;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+}
+
+.button.back {
+    background-color: yellow;
+    border-color: yellow;
+    color: black;
+}
+
+.button.next-enabled {
+    background-color: lime;
+    border-color: lime;
+    color: black;
+}
+
+.button.next-disabled {
     background-color: lightgray;
+    border-color: lightgray;
     color: darkgray;
+    cursor: not-allowed;
 }
-
-    #payButton:enabled {
-        background-color: limegreen;
-        color: white;
-    }

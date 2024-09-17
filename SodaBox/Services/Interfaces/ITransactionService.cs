@@ -2,8 +2,18 @@
 {
     public interface ITransactionService
     {
-        void CompleteTransaction();  // Завершение транзакции
-        bool IsTransactionCompleted();  // Проверка, завершена ли транзакция
-        void ResetTransaction();  // Сброс состояния транзакции
+        int? requestSum { get; }
+        int? completeSum { get; }
+        // Начало транзакции, определение требуемой суммы
+        void StartTransaction(int sum);
+
+        // Подтверждение транзакции, определение уплаченной суммы
+        void CompleteTransaction(int sum);
+
+        // Проверка завершённости транзакции
+        bool IsTransactionCompleted();
+
+        // Сброс транзакции
+        void EndTransaction();
     }
 }

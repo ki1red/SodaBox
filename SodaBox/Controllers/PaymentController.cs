@@ -10,21 +10,20 @@ public class PaymentController : Controller
     {
         _transactionService = transactionService;
     }
-    public IActionResult Payment(int sum)
+    public IActionResult Payment()
     {
-        // Если оплата проведена, то страница оплаты не может быть доступна
-        if (_transactionService.IsTransactionCompleted())
+        // Если оплата не начата, то страница оплаты не может быть доступна
+        if (!_transactionService.IsTransactionCompleted())
         {
-            return RedirectToAction("Index", "Store");
+            return RedirectToAction("Bucket", "Bucket");
         }
 
         Response.Headers.Append("Cache-Control", "no-store");
         Response.Headers.Append("Pragma", "no-cache");
         Response.Headers.Append("Expires", "0");
-
         var viewModel = new PaymentViewModel
         {
-            totalAmount = sum
+            totalAmount = _transactionService.requestSum.Value
         };
 
         return View(viewModel);
@@ -36,20 +35,10 @@ public class PaymentController : Controller
         if (model.isCanPay)
         {
             // Логика обработки успешной оплаты
-            return RedirectToAction("Change", new { amount = model.currentAmount - model.totalAmount });
+            _transactionService.CompleteTransaction(model.currentAmount);
+            return RedirectToAction("Change");
         }
         return View("Payment", model);
     }
 
-    public IActionResult Change(int amount)
-    {
-        _transactionService.CompleteTransaction();
-        ViewBag.changeAmount = amount;
-        return View();
-    }
-
-    public IActionResult Success()
-    {
-        return View("Success");
-    }
 }

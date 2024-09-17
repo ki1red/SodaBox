@@ -2,8 +2,6 @@
 
 <h1>Оплата заказа</h1>
 
-<p>Необходимо оплатить: <span id="totalAmount">@Model.totalAmount</span> руб.</p>
-
 <table>
     <thead>
         <tr>
@@ -26,11 +24,24 @@
     </tbody>
 </table>
 
+<p>Необходимо оплатить: <span id="totalAmount">@Model.totalAmount</span> руб.</p>
 <p>Внесено: <span id="currentAmount">@Model.currentAmount</span> руб.</p>
 
-<a id="payButton" class="btn btn-primary" href="" role="button" aria-disabled="true">Оплатить</a>
+<div style="text-align: right; margin-bottom: 20px;">
+    <button id="bucketButton" class="button back" onclick="window.location.href = '/Bucket/Bucket'">
+        <span class="button-text">Вернуться</span>
+    </button>
+</div>
 
-<a href="/Store/Index" class="btn btn-secondary">← Вернуться к напиткам</a>
+<div style="text-align: right; margin-bottom: 20px;">
+    <button id="payButton" class="button next-disabled" data-disabled="true" onclick="handlePayButtonClick()">
+        <span class="button-text">Оплатить</span>
+    </button>
+</div>
 
 <script src="~/js/payment.js"></script>
 <link rel="stylesheet" href="~/css/payment.css">
+
+<script>
+    var sum = @Model.currentAmount;
+</script>

@@ -32,7 +32,7 @@ function checkCanPay(currentAmount) {
 
     if (currentAmount >= totalAmount) {
         payButton.disabled = false;
-        payButton.href = '/Payment/Change?amount=' + (currentAmount - totalAmount);
+        payButton.href = '/Payment/Change';
     } else {
         payButton.disabled = true;
         payButton.removeAttribute('href');
