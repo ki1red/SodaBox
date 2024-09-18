@@ -86,3 +86,11 @@ input[type="number"] {
 .payment-info p:last-child {
     margin-right: 0; /* Убираем отступ для последнего элемента (Внесено) */
 }
+
+.amount-status.red {
+    color: red;
+}
+
+.amount-status.green {
+    color: green;
+}

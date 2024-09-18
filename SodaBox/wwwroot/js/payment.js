@@ -1,8 +1,22 @@
 ﻿document.addEventListener("DOMContentLoaded", function () {
     updateCurrentAmount();
+    updateAmountStatus();
     updatePayButton();
 });
 
+function updateAmountStatus() {
+    const totalAmount = parseInt(document.getElementById('totalAmount').textContent, 10);
+    const currentAmount = parseInt(document.getElementById('currentAmount').textContent, 10);
+    const amountStatus = document.getElementById('currentAmount');
+
+    if (currentAmount >= totalAmount) {
+        amountStatus.classList.remove('red');
+        amountStatus.classList.add('green');
+    } else {
+        amountStatus.classList.remove('green');
+        amountStatus.classList.add('red');
+    }
+}
 function updateCoin(denomination, change) {
     const coinSumElement = document.getElementById('coin-sum-' + denomination);
     const coinInputElement = document.getElementById('coin-input-' + denomination);
@@ -18,6 +32,7 @@ function updateCoin(denomination, change) {
     coinInputElement.value = coinCount; // Обновляем значение текстового поля
 
     updateCurrentAmount();
+    updateAmountStatus();
 }
 
 function updateCoinFromInput(denomination) {
