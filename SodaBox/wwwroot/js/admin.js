@@ -8,6 +8,16 @@
     document.getElementById('saveButton').disabled = !isValid;
 }
 
+function updateQuantity(drinkId, change) {
+    const input = document.getElementById(`quantity-${drinkId}`);
+    let currentQuantity = parseInt(input.value, 10);
+    if (!isNaN(currentQuantity)) {
+        currentQuantity += change;
+        if (currentQuantity < 0) currentQuantity = 0; // Нельзя устанавливать отрицательное значение
+        input.value = currentQuantity;
+    }
+}
+
 function saveQuantities() {
     const form = document.getElementById('adminForm');
     const formData = new FormData(form);
