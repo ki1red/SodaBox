@@ -31,12 +31,18 @@ else
                         @item.drink.name
                     </td>
                     <td>
-                        <button onclick="updateCart(@item.drink.id, Math.max(@item.quantity - 1, 0))" @if (item.quantity <= 1)
+                        <button class="quantity-button" onclick="updateCart(@item.drink.id, Math.max(@item.quantity - 1, 1))"
+                        @if (item.quantity <= 1)
                         {
                             <text>disabled</text>
                         }>-</button>
-                        @item.quantity
-                        <button onclick="updateCart(@item.drink.id, Math.min(@item.quantity + 1, @item.drink.quantity))" @if (item.quantity >= item.drink.quantity)
+
+                        <input type="number" id="cart-input-@item.drink.id" value="@item.quantity" min="1" max="@item.drink.quantity"
+                               data-max-quantity="@item.drink.quantity" style="width: 60px; text-align: center;"
+                               oninput="updateCartFromInput(@item.drink.id)" />
+
+                        <button class="quantity-button" onclick="updateCart(@item.drink.id, Math.min(@item.quantity + 1, @item.drink.quantity))"
+                        @if (item.quantity >= item.drink.quantity)
                         {
                             <text>disabled</text>
                         }>+</button>

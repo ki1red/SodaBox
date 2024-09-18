@@ -54,3 +54,14 @@ input[type="number"] {
     width: 60px; /* Ширина текстового поля для ввода */
     text-align: center;
 }
+
+.quantity-button {
+    background-color: #ddd;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.quantity-button:hover {
+    background-color: #ccc;
+}

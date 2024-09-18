@@ -21,9 +21,9 @@
                     @coin.Key руб.
                 </td>
                 <td>
-                    <button onclick="updateCoin(@(coin.Key), -1)">-</button>
+                    <button class="quantity-button" onclick="updateCoin(@(coin.Key), -1)">-</button>
                     <input type="number" id="coin-input-@coin.Key" value="@coin.Value" min="0" step="1" style="width: 60px; text-align: center;" oninput="updateCoinFromInput(@(coin.Key))"/>
-                    <button onclick="updateCoin(@(coin.Key), +1)">+</button>
+                    <button class="quantity-button" onclick="updateCoin(@(coin.Key), +1)">+</button>
                 </td>
                 <td>
                     <span id="coin-sum-@coin.Key">@(@coin.Key * coin.Value)</span> руб.

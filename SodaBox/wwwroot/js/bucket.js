@@ -17,6 +17,21 @@ function updateCart(drinkId, quantity) {
     });
 }
 
+function updateCartFromInput(drinkId) {
+    const inputElement = document.getElementById('cart-input-' + drinkId);
+    let quantity = parseInt(inputElement.value, 10);
+
+    if (isNaN(quantity) || quantity < 1) {
+        quantity = 1; // Минимальное значение — 1
+        inputElement.value = 1;
+    } else if (quantity > maxQuantity) {
+        quantity = maxQuantity; // Максимальное значение — количество напитков на складе
+        inputElement.value = maxQuantity; // Корректируем значение в поле
+    }
+
+    updateCart(drinkId, quantity); // Обновляем корзину с новым количеством
+}
+
 function handlePayButtonClick() {
     const payButton = document.getElementById('payButton');
 
@@ -77,3 +92,15 @@ function deleteFromCart(drinkId) {
         console.error('Error:', error);
     });
 }
+
+document.querySelectorAll('input[type="number"]').forEach(input => {
+    input.addEventListener('input', function () {
+        // Удаляем любые нечисловые символы, кроме цифр
+        this.value = this.value.replace(/[^0-9]/g, '');
+
+        // Запрещаем ввод значения меньше 1
+        if (this.value === '' || parseInt(this.value, 10) < 1) {
+            this.value = 1;
+        }
+    });
+});

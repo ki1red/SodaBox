@@ -11,9 +11,8 @@
                 <h3>@drink.name</h3>
                 <p>@drink.price руб.</p>
                 <p>
-                    Остаток:
                     <button type="button" class="quantity-button" data-drink-id="@drink.id" onclick="updateQuantity(@drink.id, -1)">-</button>
-                    <input type="number" id="quantity-@drink.id" name="drinks[@drink.id].quantity" value="@drink.quantity" min="0" step="1"/>
+                    <input type="number" id="quantity-@drink.id" name="drinks[@drink.id].quantity" value="@drink.quantity" min="0" step="1" style="width: 60px; text-align: center;" />
                     <button type="button" class="quantity-button" data-drink-id="@drink.id" onclick="updateQuantity(@drink.id, 1)">+</button>
                 </p>
             </div>
