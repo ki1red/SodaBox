@@ -54,6 +54,10 @@ public class StoreController : Controller
 
     public IActionResult Admin()
     {
+        if (_transactionService.IsTransactionCompleted())
+        {
+            return RedirectToAction("Index");
+        }
         _transactionService.EndTransaction();
 
         var viewModel = new AdminViewModel
