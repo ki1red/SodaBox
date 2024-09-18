@@ -13,5 +13,6 @@ namespace SodaBox.Services.Interfaces
         bool RemoveFromCart(Drink drink);
         bool IsHasCart(Drink drink);
         bool UpdateCart(int drinkId, int newQuantity);
+        void ClearCart();
     }
 }

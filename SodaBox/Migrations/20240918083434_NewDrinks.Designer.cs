@@ -11,8 +11,8 @@ using SodaBox.DataAccess;
 namespace SodaBox.Migrations
 {
     [DbContext(typeof(VendingMachineContext))]
-    [Migration("20240914101602_InitialCreator")]
-    partial class InitialCreator
+    [Migration("20240918083434_NewDrinks")]
+    partial class NewDrinks
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -101,8 +101,8 @@ namespace SodaBox.Migrations
                             brandId = 1,
                             imagePath = "images/drinks/coca_cola.png",
                             name = "Coca Cola",
-                            price = 100,
-                            quantity = 10
+                            price = 65,
+                            quantity = 3
                         },
                         new
                         {
@@ -110,8 +110,8 @@ namespace SodaBox.Migrations
                             brandId = 2,
                             imagePath = "images/drinks/pepsi.png",
                             name = "Pepsi",
-                            price = 95,
-                            quantity = 5
+                            price = 40,
+                            quantity = 3
                         },
                         new
                         {
@@ -119,8 +119,8 @@ namespace SodaBox.Migrations
                             brandId = 1,
                             imagePath = "images/drinks/coca_cola_zero.png",
                             name = "Coca Cola Zero",
-                            price = 130,
-                            quantity = 5
+                            price = 70,
+                            quantity = 0
                         },
                         new
                         {
@@ -128,8 +128,8 @@ namespace SodaBox.Migrations
                             brandId = 3,
                             imagePath = "images/drinks/fanta.png",
                             name = "Fanta",
-                            price = 120,
-                            quantity = 5
+                            price = 55,
+                            quantity = 2
                         },
                         new
                         {
@@ -137,8 +137,35 @@ namespace SodaBox.Migrations
                             brandId = 4,
                             imagePath = "images/drinks/sprite.png",
                             name = "Sprite",
-                            price = 120,
-                            quantity = 5
+                            price = 55,
+                            quantity = 0
+                        },
+                        new
+                        {
+                            id = 6,
+                            brandId = 1,
+                            imagePath = "images/drinks/coca_cola.png",
+                            name = "Coca Cola",
+                            price = 65,
+                            quantity = 1
+                        },
+                        new
+                        {
+                            id = 7,
+                            brandId = 2,
+                            imagePath = "images/drinks/pepsi.png",
+                            name = "Pepsi",
+                            price = 40,
+                            quantity = 1
+                        },
+                        new
+                        {
+                            id = 8,
+                            brandId = 4,
+                            imagePath = "images/drinks/sprite.png",
+                            name = "Sprite",
+                            price = 55,
+                            quantity = 2
                         });
                 });
 

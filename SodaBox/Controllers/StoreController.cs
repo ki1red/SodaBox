@@ -27,14 +27,16 @@ public class StoreController : Controller
     // Главная страница магазина
     public async Task<IActionResult> Index()
     {
-        //if (_transactionService.IsTransactionCompleted() &&
-        //    _transactionService.requestSum != null &&
-        //    _transactionService.completeSum != null)
-        //{
-        //    Response.Headers.Append("Cache-Control", "no-store");
-        //    Response.Headers.Append("Pragma", "no-cache");
-        //    Response.Headers.Append("Expires", "0");
-        //}
+        if (_transactionService.IsTransactionCompleted() &&
+            _transactionService.requestSum != null &&
+            _transactionService.completeSum != null)
+        {
+            Response.Headers.Append("Cache-Control", "no-store");
+            Response.Headers.Append("Pragma", "no-cache");
+            Response.Headers.Append("Expires", "0");
+
+            UpdateDrinksStock();
+        }
 
         _transactionService.EndTransaction();
 
@@ -108,4 +110,33 @@ public class StoreController : Controller
         return Json(cart);
     }
 
+    [HttpPost]
+    public IActionResult UpdateDrinksStock()
+    {
+        var cart = _cartService.GetCart();
+
+        Console.WriteLine("cart");
+        if (cart != null && cart.Any())
+        {
+            foreach (var item in cart)
+            {
+                var drinkInDb = _context.drinks.Find(item.drink.id);
+                if (drinkInDb != null)
+                {
+                    drinkInDb.quantity -= item.quantity;
+
+                    if (drinkInDb.quantity < 0)
+                        drinkInDb.quantity = 0;
+
+                    _context.SaveChanges();
+                }
+            }
+
+            // Очищаем корзину после обновления количества напитков
+            _cartService.ClearCart();
+
+            return Ok(new { message = "Stock updated successfully" });
+        }
+        return BadRequest(new { message = "Cart is empty" });
+    }
 }

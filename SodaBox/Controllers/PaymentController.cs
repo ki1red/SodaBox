@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Cors.Infrastructure;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SodaBox.Models;
 using SodaBox.Services.Classes;
 using SodaBox.Services.Interfaces;
+using System.Net.Http;
 
 public class PaymentController : Controller
 {
@@ -36,9 +38,10 @@ public class PaymentController : Controller
     }
 
     [HttpPost]
-    public IActionResult Pay([FromBody] int sum)
+    public ActionResult Pay([FromBody] int sum)
     {
         _transactionService.CompleteTransaction(sum);
+
         return Ok(new { redirectUrl = Url.Action("Change", "Payment") });
     }
 
@@ -48,6 +51,7 @@ public class PaymentController : Controller
         {
             return RedirectToAction("Index", "Store");
         }
+
 
         Response.Headers.Append("Cache-Control", "no-store");
         Response.Headers.Append("Pragma", "no-cache");

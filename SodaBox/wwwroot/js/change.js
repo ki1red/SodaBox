@@ -17,7 +17,6 @@ function calculateChange(amount, denominations) {
             amount %= denom;
         }
     }
-
     return result;
 }
 

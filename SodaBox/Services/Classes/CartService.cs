@@ -87,6 +87,11 @@ namespace SodaBox.Services.Classes
 
             return true;
         }
+        
+        public void ClearCart()
+        {
+            SaveCart(new List<CartItem>());
+        }
     }
 
     public class CartItem
