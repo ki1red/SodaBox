@@ -48,14 +48,10 @@ function saveQuantities() {
         });
 }
 
-// Добавляем обработчики событий для проверки полей
 document.querySelectorAll('input[type="number"]').forEach(input => {
-    input.addEventListener('input', () => {
-        // Проверка на отрицательные значения
-        if (input.value < 0) {
-            input.value = 0;
-        }
-        validateForm(); // Проверка всего состояния формы
+    input.addEventListener('input', function () {
+        this.value = this.value.replace(/[^0-9]/g, '');
+        validateForm();
     });
 });
 

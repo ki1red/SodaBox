@@ -4,10 +4,9 @@
 });
 
 function updateCoin(denomination, change) {
-    const coinCountElement = document.getElementById('coin-count-' + denomination);
     const coinSumElement = document.getElementById('coin-sum-' + denomination);
-    let coinCount = parseInt(coinCountElement.textContent, 10);
-
+    const coinInputElement = document.getElementById('coin-input-' + denomination);
+    let coinCount = parseInt(coinInputElement.value, 10);
     // Обновляем количество монет
     coinCount += change;
     if (coinCount < 0) {
@@ -15,7 +14,23 @@ function updateCoin(denomination, change) {
     }
 
     // Обновляем отображение количества монет и суммы
-    coinCountElement.textContent = coinCount;
+    coinSumElement.textContent = (denomination * coinCount);
+    coinInputElement.value = coinCount; // Обновляем значение текстового поля
+
+    updateCurrentAmount();
+}
+
+function updateCoinFromInput(denomination) {
+    const coinInputElement = document.getElementById('coin-input-' + denomination);
+    const coinSumElement = document.getElementById('coin-sum-' + denomination);
+    let coinCount = parseInt(coinInputElement.value, 10);
+
+    //if (isNaN(coinCount) || coinCount < 0) {
+    //    coinCount = 0;
+    //}
+
+    // Обновляем отображение количества монет и суммы
+    coinInputElement.textContent = coinCount;
     coinSumElement.textContent = (denomination * coinCount);
 
     updateCurrentAmount();
@@ -51,7 +66,6 @@ function handlePayButtonClick() {
     const sum = parseFloat(document.getElementById('currentAmount').textContent);
 
     if (payButton.dataset.disabled === 'false') {
-
         fetch('/Payment/Pay', {
             method: 'POST',
             headers: {
@@ -76,7 +90,6 @@ function handlePayButtonClick() {
 
 function updatePayButton() {
     var payButton = document.getElementById('payButton');
-    //const currentAmount = parseFloat(document.getElementById('currentAmount').textContent);
     if (Number(currentAmount) >= Number(needAmount)) {
         payButton.classList.remove('next-disabled');
         payButton.classList.add('next-enabled');
@@ -87,3 +100,9 @@ function updatePayButton() {
         payButton.dataset.disabled = 'true';
     }
 }
+
+document.querySelectorAll('input[type="number"]').forEach(input => {
+    input.addEventListener('input', function () {
+        this.value = this.value.replace(/[^0-9]/g, '');
+    });
+});

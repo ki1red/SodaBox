@@ -15,15 +15,15 @@
         {
             <tr>
                 <td>
-                    <img src="~/images/coins/@(coin.Key == 1 ? "1" : coin.Key == 2 ? "2" : coin.Key == 5 ? "5" : "10").png" 
-                         alt="@coin.Key руб." 
+                    <img src="~/images/coins/@(coin.Key == 1 ? "1" : coin.Key == 2 ? "2" : coin.Key == 5 ? "5" : "10").png"
+                         alt="@coin.Key руб."
                          style="width: 100px; height: 100px; margin-right: 10px;" />
                     @coin.Key руб.
                 </td>
                 <td>
-                    <button onclick="updateCoin(@coin.Key, -1)">-</button>
-                    <span id="coin-count-@coin.Key">@coin.Value</span>
-                    <button onclick="updateCoin(@coin.Key, +1)">+</button>
+                    <button onclick="updateCoin(@(coin.Key), -1)">-</button>
+                    <input type="number" id="coin-input-@coin.Key" value="@coin.Value" min="0" step="1" style="width: 60px; text-align: center;" oninput="updateCoinFromInput(@(coin.Key))"/>
+                    <button onclick="updateCoin(@(coin.Key), +1)">+</button>
                 </td>
                 <td>
                     <span id="coin-sum-@coin.Key">@(@coin.Key * coin.Value)</span> руб.
