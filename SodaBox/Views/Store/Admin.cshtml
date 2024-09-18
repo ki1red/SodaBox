@@ -1,0 +1,32 @@
+﻿@model AdminViewModel
+
+<h1>Административная панель</h1>
+
+<form id="adminForm">
+    <div id="drinksContainer" class="drinks-grid">
+        @foreach (var drink in Model.drinks)
+        {
+            <div class="drink-item">
+                <img src="@Url.Content($"~/{drink.imagePath}")" alt="@drink.name" />
+                <h3>@drink.name</h3>
+                <p>Цена: @drink.price руб.</p>
+                <p>
+                    Остаток:
+                    <button type="button" class="quantity-button" data-drink-id="@drink.id" onclick="updateQuantity(@drink.id, -1)">-</button>
+                    <input type="number" id="quantity-@drink.id" name="drinks[@drink.id].quantity" value="@drink.quantity" min="0" step="1"/>
+                    <button type="button" class="quantity-button" data-drink-id="@drink.id" onclick="updateQuantity(@drink.id, 1)">+</button>
+                </p>
+            </div>
+        }
+    </div>
+    @* <button type="submit" id="saveButton">Сохранить</button> *@
+    <div style="text-align: right; margin-bottom: 20px;">
+        <button id="saveButton" class="button save" type="button" onclick="saveQuantities()" disabled>
+            <span class="button-text">Сохранить</span>
+        </button>
+    </div>
+</form>
+
+<!-- Подключение стилей и скриптов -->
+<link rel="stylesheet" href="~/css/admin.css">
+<script src="~/js/admin.js"></script>

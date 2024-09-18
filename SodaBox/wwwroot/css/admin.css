@@ -1,0 +1,48 @@
+﻿/* admin.css */
+.drinks-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.drink-item {
+    border: 1px solid #ddd;
+    padding: 16px;
+    border-radius: 8px;
+    width: calc(25% - 16px); /* 4 items per row */
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.drink-item img {
+    width: 100px;
+    height: 150px;
+    object-fit: cover;
+}
+
+.quantity-button {
+    background-color: #ddd;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.quantity-button:hover {
+    background-color: #ccc;
+}
+
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    border: 2px solid transparent;
+    border-radius: 5px;
+    font-size: 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+.button.save {
+    background-color: lime;
+    border-color: lime;
+    color: black;
+}

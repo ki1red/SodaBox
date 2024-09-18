@@ -52,6 +52,18 @@ public class StoreController : Controller
         return View(viewModel);
     }
 
+    public IActionResult Admin()
+    {
+        _transactionService.EndTransaction();
+
+        var viewModel = new AdminViewModel
+        {
+            drinks = _context.drinks.ToList()
+        };
+
+        return View(viewModel);
+    }
+
     // API для фильтрации
     [HttpGet]
     public async Task<IActionResult> FilterDrinks(int? brandId, decimal? minPrice, decimal? maxPrice)
@@ -111,32 +123,46 @@ public class StoreController : Controller
     }
 
     [HttpPost]
-    public IActionResult UpdateDrinksStock()
+    public IActionResult UpdateDrinksStock([FromBody] Dictionary<int, int>? drinks = null)
     {
-        var cart = _cartService.GetCart();
-
-        Console.WriteLine("cart");
-        if (cart != null && cart.Any())
+        if (drinks != null)
         {
-            foreach (var item in cart)
+            foreach (var drink in drinks)
             {
-                var drinkInDb = _context.drinks.Find(item.drink.id);
+                if (drink.Value < 0)
+                {
+                    return BadRequest("Количество напитков не может быть отрицательным");
+                }
+
+                var drinkInDb = _context.drinks.Find(drink.Key);
                 if (drinkInDb != null)
                 {
-                    drinkInDb.quantity -= item.quantity;
+                    drinkInDb.quantity = drink.Value;
+                }
+                _context.SaveChanges();
+            }
+        }
+        else
+        {
+            var cart = _cartService.GetCart();
+            if (cart != null && cart.Any())
+            {
+                foreach (var item in cart)
+                {
+                    var drinkInDb = _context.drinks.Find(item.drink.id);
+                    if (drinkInDb != null)
+                    {
+                        drinkInDb.quantity -= item.quantity;
 
-                    if (drinkInDb.quantity < 0)
-                        drinkInDb.quantity = 0;
+                        if (drinkInDb.quantity < 0)
+                            drinkInDb.quantity = 0;
 
-                    _context.SaveChanges();
+                        _context.SaveChanges();
+                    }
                 }
             }
-
-            // Очищаем корзину после обновления количества напитков
-            _cartService.ClearCart();
-
-            return Ok(new { message = "Stock updated successfully" });
         }
-        return BadRequest(new { message = "Cart is empty" });
+        _cartService.ClearCart();
+        return Ok();
     }
 }
