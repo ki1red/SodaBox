@@ -3,55 +3,48 @@
     updatePayButton();
 });
 
-function updateCoin(denomination, increment) {
-    const coinCountElement = document.getElementById(`coin-count-${denomination}`);
-    let currentCount = parseInt(coinCountElement.textContent) || 0;
-    currentCount += increment;
+function updateCoin(denomination, change) {
+    const coinCountElement = document.getElementById('coin-count-' + denomination);
+    const coinSumElement = document.getElementById('coin-sum-' + denomination);
+    let coinCount = parseInt(coinCountElement.textContent, 10);
 
-    if (currentCount >= 0) {
-        coinCountElement.textContent = currentCount;
-        updateCurrentAmount();
+    // Обновляем количество монет
+    coinCount += change;
+    if (coinCount < 0) {
+        coinCount = 0;
     }
 
-    fetch(`/Bucket/ReloadCart?drinkId=${drinkId}&quantity=${quantity}`, {
-        method: 'PUT'
-    }).then(response => {
-        if (response.ok) {
-            location.reload(); // Перезагружаем страницу для обновления данных
-            updatePaymentButton();
-        } else {
-            alert('Failed to update cart');
-        }
-    }).catch(error => {
-        console.error('Error:', error);
-    });
+    // Обновляем отображение количества монет и суммы
+    coinCountElement.textContent = coinCount;
+    coinSumElement.textContent = (denomination * coinCount);
+
+    updateCurrentAmount();
 }
 
+// Функция обновления текущей суммы
 function updateCurrentAmount() {
-    let total = 0;
-    const coinElements = document.querySelectorAll("span[id^='coin-count-']");
-    coinElements.forEach(element => {
-        const denomination = parseInt(element.id.replace('coin-count-', ''));
-        const count = parseInt(element.textContent) || 0;
-        total += denomination * count;
+    let sum = 0;
+
+    // Проходим по всем строкам таблицы и суммируем значения из столбца "Сумма"
+    document.querySelectorAll('tbody tr').forEach(row => {
+        const coinSumElement = row.querySelector('[id^="coin-sum-"]');
+        if (coinSumElement) {
+            const coinSum = parseFloat(coinSumElement.textContent);
+            if (!isNaN(coinSum)) {
+                sum += coinSum;
+            }
+        }
     });
 
-    document.getElementById("currentAmount").textContent = total;
+    // Обновляем переменную currentAmount
+    currentAmount = sum;
+    console.log(currentAmount);
+    // Обновляем отображение на странице
+    document.getElementById('currentAmount').textContent = currentAmount.toFixed(2);
+
+    // Обновляем кнопку "Оплатить"
     updatePayButton();
 }
-
-//function checkCanPay(currentAmount) {
-//    const totalAmount = parseInt(document.querySelector("#totalAmount").textContent);
-//    const payButton = document.getElementById("payButton");
-
-//    if (currentAmount >= totalAmount) {
-//        payButton.disabled = false;
-//        payButton.href = '/Payment/Change';
-//    } else {
-//        payButton.disabled = true;
-//        payButton.removeAttribute('href');
-//    }
-//}
 
 function handlePayButtonClick() {
     const payButton = document.getElementById('payButton');
@@ -83,7 +76,7 @@ function handlePayButtonClick() {
 
 function updatePayButton() {
     var payButton = document.getElementById('payButton');
-    const currentAmount = parseFloat(document.getElementById('currentAmount').textContent);
+    //const currentAmount = parseFloat(document.getElementById('currentAmount').textContent);
     if (Number(currentAmount) >= Number(needAmount)) {
         payButton.classList.remove('next-disabled');
         payButton.classList.add('next-enabled');

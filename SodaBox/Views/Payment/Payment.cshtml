@@ -5,26 +5,35 @@
 <table>
     <thead>
         <tr>
-            <th>Номинал (рубли)</th>
+            <th>Номинал</th>
             <th>Количество</th>
+            <th>Сумма</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var coin in Model.coins)
         {
             <tr>
-                <td>@coin.Key руб.</td>
+                <td>
+                    <img src="~/images/coins/@(coin.Key == 1 ? "1" : coin.Key == 2 ? "2" : coin.Key == 5 ? "5" : "10").png" 
+                         alt="@coin.Key руб." 
+                         style="width: 100px; height: 100px; margin-right: 10px;" />
+                    @coin.Key руб.
+                </td>
                 <td>
                     <button onclick="updateCoin(@coin.Key, -1)">-</button>
                     <span id="coin-count-@coin.Key">@coin.Value</span>
                     <button onclick="updateCoin(@coin.Key, +1)">+</button>
+                </td>
+                <td>
+                    <span id="coin-sum-@coin.Key">@(@coin.Key * coin.Value)</span> руб.
                 </td>
             </tr>
         }
     </tbody>
 </table>
 
-<p>Необходимо оплатить: <span id="totalAmount">@Model.totalAmount</span> руб.</p>
+<p>К оплате: <span id="totalAmount">@Model.totalAmount</span> руб.</p>
 <p>Внесено: <span id="currentAmount">@Model.currentAmount</span> руб.</p>
 
 <div style="text-align: right; margin-bottom: 20px;">
@@ -45,4 +54,5 @@
 
 <script>
     var needAmount = @Model.totalAmount;
+    var currentAmount = @Model.currentAmount;
 </script>

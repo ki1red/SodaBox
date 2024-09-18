@@ -1,18 +1,25 @@
 ﻿@model ChangeViewModel
 
-<h1>Выдача сдачи</h1>
+<div class="change-wrapper">
+    @if (Model.change > 0)
+    {
+        <h1 class="center-text">Спасибо за покупку!</h1>
+        <p class="center-text">Ваша сдача: @Model.change руб.</p>
+        <div id="changeContainer" class="change-container"></div>
+    }
+    else
+    {
+        <h1 class="center-text">Спасибо за покупку!</h1>
+    }
 
-<p>Ваша сдача составляет:</p>
-<ul id="changeList"></ul>
-
-<div style="text-align: right; margin-bottom: 20px;">
-    <button id="storeButton" class="button back" onclick="window.location.href = '/Store/Index'">
-        <span class="button-text">Каталог</span>
-    </button>
+    <div class="button-container">
+        <button id="storeButton" class="button back" onclick="window.location.href = '/Store/Index'">
+            <span class="button-text">Каталог</span>
+        </button>
+    </div>
 </div>
-
 
 <div id="changeAmount" data-amount="@Model.change" style="display: none;"></div>
 
 <script src="~/js/change.js"></script>
-<link rel="stylesheet" href="~/css/payment.css">
+<link rel="stylesheet" href="~/css/change.css">

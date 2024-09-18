@@ -1,23 +1,23 @@
-﻿/* admin.css */
+﻿/* Применение шрифта ко всем текстовым элементам */
+body {
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+}
+
 .drinks-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 напитка в строке */
+    gap: 20px;
 }
 
 .drink-item {
-    border: 1px solid #ddd;
-    padding: 16px;
-    border-radius: 8px;
-    width: calc(25% - 16px); /* 4 items per row */
-    box-sizing: border-box;
     text-align: center;
+    border: 1px solid #ddd; /* Тонкая рамка */
+    padding: 10px;
 }
 
 .drink-item img {
-    width: 100px;
-    height: 150px;
-    object-fit: cover;
+    width: 200px; /* Ширина изображения */
+    height: 300px; /* Высота изображения */
 }
 
 .quantity-button {
@@ -45,4 +45,10 @@
     background-color: lime;
     border-color: lime;
     color: black;
+}
+
+.button-text {
+    display: inline-block;
+    vertical-align: middle;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
 }

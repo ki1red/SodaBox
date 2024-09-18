@@ -63,3 +63,17 @@ function updatePaymentButton() {
         })
         .catch(error => console.error('Ошибка:', error));
 }
+
+function deleteFromCart(drinkId) {
+    fetch(`/Bucket/DeleteItem?drinkId=${drinkId}`, {
+        method: 'PUT'
+    }).then(response => {
+        if (response.ok) {
+            location.reload(); // Перезагружаем страницу для обновления данных
+        } else {
+            alert('Failed to remove item from cart');
+        }
+    }).catch(error => {
+        console.error('Error:', error);
+    });
+}

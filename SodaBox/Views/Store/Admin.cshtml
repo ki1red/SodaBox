@@ -9,7 +9,7 @@
             <div class="drink-item">
                 <img src="@Url.Content($"~/{drink.imagePath}")" alt="@drink.name" />
                 <h3>@drink.name</h3>
-                <p>Цена: @drink.price руб.</p>
+                <p>@drink.price руб.</p>
                 <p>
                     Остаток:
                     <button type="button" class="quantity-button" data-drink-id="@drink.id" onclick="updateQuantity(@drink.id, -1)">-</button>
@@ -19,7 +19,7 @@
             </div>
         }
     </div>
-    @* <button type="submit" id="saveButton">Сохранить</button> *@
+    
     <div style="text-align: right; margin-bottom: 20px;">
         <button id="saveButton" class="button save" type="button" onclick="saveQuantities()" disabled>
             <span class="button-text">Сохранить</span>

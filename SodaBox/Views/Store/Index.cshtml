@@ -4,7 +4,7 @@
 
 <!-- Выпадающий список брендов -->
 <div>
-    <label for="brandFilter">Бренд:</label>
+    <label for="brandFilter">Бренд</label>
     <select id="brandFilter" name="brandFilter" onchange="filterDrinks()">
         <option value="">Все бренды</option>
         @foreach (var brand in Model.brands)
@@ -16,7 +16,7 @@
 
 <!-- Слайдер изменения ценового диапазона-->
 <div>
-    <label for="slider">Ценовой диапазон:</label>
+    <label for="slider">Стоимость</label>
     <div id="slider" style="margin-bottom: 10px;"></div>
     <span id="minPriceValue">0</span> руб. — <span id="maxPriceValue">500</span> руб.
     <input type="hidden" id="minPrice" value="0" />

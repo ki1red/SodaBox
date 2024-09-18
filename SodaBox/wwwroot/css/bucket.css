@@ -1,4 +1,9 @@
-﻿/* bucket.css */
+﻿
+/* Применение шрифта ко всем текстовым элементам */
+body {
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+}
+
 .bucket-item img {
     width: 100px; /* Ширина изображения */
     height: 150px; /* Высота изображения */
@@ -39,4 +44,16 @@
     border-color: lightgray;
     color: darkgray;
     cursor: not-allowed;
+}
+
+.button-delete {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer; /* Указывает, что элемент кликабелен */
+}
+
+.button-delete img {
+    width: 20px;
+    height: 20px;
 }

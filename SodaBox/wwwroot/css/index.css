@@ -1,4 +1,9 @@
-﻿/* index.css */
+﻿
+/* Применение шрифта ко всем текстовым элементам */
+body {
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+}
+
 .drinks-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr); /* 4 напитка в строке */

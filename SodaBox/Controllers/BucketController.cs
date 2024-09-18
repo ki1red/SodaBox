@@ -62,5 +62,14 @@ namespace SodaBox.Controllers
 
             return Ok(new { redirectUrl = Url.Action("Payment", "Payment") });
         }
+        [HttpPut]
+        public IActionResult DeleteItem(int drinkId)
+        {
+            var cart = _cartService.GetCart();
+            var cartItem = cart.FirstOrDefault(item => item.drink.id == drinkId);
+            _cartService.RemoveFromCart(cartItem.drink);
+            return Ok();
+        }
+
     }
 }

@@ -1,0 +1,64 @@
+﻿/* Применение шрифта ко всем текстовым элементам */
+body {
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+}
+
+
+/* Центрирование текста */
+.center-text {
+    text-align: center;
+    margin-top: 20px; /* Отступ сверху */
+}
+
+/* Центрирование контейнера с сдачей */
+.change-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Центрирование по горизонтали */
+    padding: 0;
+    margin: 20px 0; /* Отступы для элементов */
+}
+
+/* Стили для элементов сдачи */
+.change-item {
+    display: flex; /* Используем флекс для выравнивания изображения и текста */
+    align-items: center; /* Выравнивание по вертикали */
+    margin: 10px 0; /* Отступы для элементов */
+    text-align: center; /* Выравнивание текста по центру */
+}
+
+/* Стили для изображений */
+.change-item img {
+    width: 50px; /* Размеры изображения */
+    height: 50px;
+    margin-right: 10px; /* Отступ справа от изображения */
+}
+
+/* Стили для кнопок */
+.button-container {
+    text-align: center; /* Центрирование кнопки */
+    margin-top: 20px; /* Отступ сверху */
+}
+
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    border: 2px solid transparent;
+    border-radius: 5px;
+    font-size: 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+    .button.back {
+        background-color: yellow;
+        border-color: yellow;
+        color: black;
+    }
+
+.button-text {
+    display: inline-block;
+    vertical-align: middle;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+}
