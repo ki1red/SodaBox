@@ -21,6 +21,12 @@ body {
     transition: background-color 0.3s, border-color 0.3s;
 }
 
+.button-container {
+    display: flex;
+    justify-content: space-between; /* Распределяет кнопки по разным сторонам */
+    margin-top: 20px; /* Отступ сверху, чтобы кнопки не прилипали к содержимому таблицы */
+}
+
 .button-text {
     display: inline-block;
     vertical-align: middle;

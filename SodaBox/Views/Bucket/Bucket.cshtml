@@ -65,13 +65,12 @@ else
     
 }
 
-<div style="text-align: right; margin-bottom: 20px;">
+<div class="button-container">
     <button id="storeButton" class="button back" onclick="window.location.href = '/Store/Index'">
         <span class="button-text">Вернуться</span>
     </button>
-</div>
 
-<div style="text-align: right; margin-bottom: 20px;">
+
     @Html.AntiForgeryToken()
     <button id="payButton" class="button next-disabled" data-disabled="true" onclick="handlePayButtonClick()">
         <span class="button-text">Оплата</span>

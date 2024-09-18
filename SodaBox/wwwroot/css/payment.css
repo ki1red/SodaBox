@@ -24,6 +24,12 @@ td, th {
     transition: background-color 0.3s, border-color 0.3s;
 }
 
+.button-container {
+    display: flex;
+    justify-content: space-between; /* Распределяет кнопки по разным сторонам */
+    margin-top: 20px; /* Отступ сверху, чтобы кнопки не прилипали к содержимому таблицы */
+}
+
 .button-text {
     display: inline-block;
     vertical-align: middle;
@@ -64,4 +70,19 @@ input[type="number"] {
 
 .quantity-button:hover {
     background-color: #ccc;
+}
+
+.payment-info {
+    display: flex;
+    justify-content: center; /* Центрируем элементы по горизонтали */
+    align-items: center; /* Выравниваем по вертикали */
+    margin-bottom: 20px; /* Добавляем отступ снизу */
+}
+
+.payment-info p {
+    margin-right: 50px; /* Добавляем отступ справа от "К оплате" */
+}
+
+.payment-info p:last-child {
+    margin-right: 0; /* Убираем отступ для последнего элемента (Внесено) */
 }
