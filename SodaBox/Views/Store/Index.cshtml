@@ -1,43 +1,51 @@
 ﻿@model StoreViewModel
 
-<h1>Газированные напитки</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Газированные напитки</title>
+    <link rel="stylesheet" href="~/css/index.css">
+</head>
+<body>
+    <h1>Газированные напитки</h1>
 
-<!-- Выпадающий список брендов -->
-<div>
-    <label for="brandFilter">Бренд</label>
-    <select id="brandFilter" name="brandFilter" onchange="filterDrinks()">
-        <option value="">Все бренды</option>
-        @foreach (var brand in Model.brands)
-        {
-            <option value="@brand.id">@brand.name</option>
-        }
-    </select>
-</div>
+    <div class="filter-container">
+        <!-- Выпадающий список брендов -->
+        <div class="brand-filter">
+            <select id="brandFilter" name="brandFilter" onchange="filterDrinks()">
+                <option value="">Все бренды</option>
+                @foreach (var brand in Model.brands)
+                {
+                        <option value="@brand.id">@brand.name</option>
+                }
+            </select>
+        </div>
 
-<!-- Слайдер изменения ценового диапазона-->
-<div>
-    <label for="slider">Стоимость</label>
-    <div id="slider" style="margin-bottom: 10px;"></div>
-    <span id="minPriceValue">0</span> руб. — <span id="maxPriceValue">500</span> руб.
-    <input type="hidden" id="minPrice" value="0" />
-    <input type="hidden" id="maxPrice" value="500" />
-</div>
+        <!-- Слайдер изменения ценового диапазона-->
+        <div class="price-slider">
+            <div id="slider" style="margin-bottom: 10px;"></div>
+            <span id="minPriceValue">0</span><span id="maxPriceValue">500</span>
+            <input type="hidden" id="minPrice" value="0" />
+            <input type="hidden" id="maxPrice" value="500" />
+        </div>
 
-<!-- Кнопка корзины -->
-<div style="text-align: right; margin-bottom: 20px;">
-    <button id="cartButton" class="button bucket-disabled" data-disabled="true" onclick="handleCartButtonClick()">
-        <span class="button-text">Не выбрано</span>
-    </button>
-</div>
+        <!-- Кнопка корзины -->
+        <div class="cart-button-container">
+            <button id="cartButton" class="button bucket-disabled" data-disabled="true" onclick="handleCartButtonClick()">
+                <span class="button-text">Не выбрано</span>
+            </button>
+        </div>
+    </div>
 
-<!-- Контейнер для отображения напитков -->
-<div id="drinksContainer">
-    @await Html.PartialAsync("_DrinkListPartial", Model.drinks)
-</div>
+    <!-- Контейнер для отображения напитков -->
+    <div id="drinksContainer">
+        @await Html.PartialAsync("_DrinkListPartial", Model.drinks)
+    </div>
 
-<!-- Подключение стилей и скриптов -->
-<link rel="stylesheet" href="~/css/index.css">
-<script src="~/js/index.js"></script>
-
-<script src="~/js/nouislider-bundle.js"></script>
-
+    <!-- Подключение стилей и скриптов -->
+    <script src="~/js/nouislider-bundle.js" defer></script>
+    <script src="~/js/index.js" defer></script>
+</body>
+</html>

@@ -1,4 +1,5 @@
 ﻿// index.js
+
 function updateMinPriceValue(value) {
     document.getElementById('minPriceValue').innerText = value;
     filterDrinks();  // Обновление списка напитков при изменении
@@ -9,58 +10,52 @@ function updateMaxPriceValue(value) {
     filterDrinks();  // Обновление списка напитков при изменении
 }
 
-function filterDrinks() {
-    var minPriceElement = document.getElementById('minPrice');
-    var maxPriceElement = document.getElementById('maxPrice');
+async function filterDrinks() {
+    const brandId = document.getElementById('brandFilter').value;
+    const minPrice = document.getElementById('minPrice').value;
+    const maxPrice = document.getElementById('maxPrice').value;
 
-    if (minPriceElement && maxPriceElement) {
-        var minPrice = minPriceElement.value;
-        var maxPrice = maxPriceElement.value;
-        var brandId = document.getElementById('brandFilter').value;
-
-        var url = `/Store/FilterDrinks?minPrice=${minPrice}&maxPrice=${maxPrice}&brandId=${brandId}`;
-
-        fetch(url)
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('drinksContainer').innerHTML = data;
-                checkSelectedDrinks();  // Проверка выбранных напитков после фильтрации
-                updateBucketButton();    // Обновляем кнопку корзины после фильтрации
-            })
-            .catch(error => console.error('Ошибка:', error));
-    } else {
-        console.error("Не найдены элементы minPrice или maxPrice");
+    try {
+        const response = await fetch(`/Store/FilterDrinks?brandId=${brandId}&minPrice=${minPrice}&maxPrice=${maxPrice}`);
+        const data = await response.text();
+        document.getElementById('drinksContainer').innerHTML = data;
+        await checkSelectedDrinks();
+    } catch (error) {
+        console.error('Error:', error);
     }
 }
 
-function checkSelectedDrinks() {
-    fetch('/Store/GetCartJson')
-        .then(response => response.json())
-        .then(cart => {
-            var selectedDrinks = cart.map(item => item.drink.id);
+async function checkSelectedDrinks() {
+    try {
+        const response = await fetch('/Store/GetCartJson');
+        const cart = await response.json();
+        const selectedDrinks = cart.map(item => item.drink.id);
 
-            selectedDrinks.forEach(function (drinkId) {
-                var button = document.querySelector(`button[data-drink-id='${drinkId}']`);
-                if (button) {
-                    button.classList.remove('selectdrink-available');
-                    button.classList.add('selectdrink-selected');
-                    button.querySelector('.button-text').textContent = 'Выбрано';
-                }
-            });
+        selectedDrinks.forEach(drinkId => {
+            const button = document.querySelector(`button[data-drink-id='${drinkId}']`);
+            if (button) {
+                button.classList.remove('selectdrink-available');
+                button.classList.add('selectdrink-selected');
+                button.querySelector('.button-text').textContent = 'Выбрано';
+            }
+        });
 
-            updateBucketButton();  // Обновляем кнопку корзины после загрузки корзины
-        })
-        .catch(error => console.error('Ошибка:', error));
+        updateBucketButton();  // Обновляем кнопку корзины после загрузки корзины
+    } catch (error) {
+        console.error('Ошибка:', error);
+    }
 }
 
-function addToCart(drinkId) {
-    fetch("/Store/AddOrRemoveToCart", {
-        method: "PUT",
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: `drinkId=${drinkId}`
-    }).then(response => {
+async function addToCart(drinkId) {
+    try {
+        const response = await fetch("/Store/AddOrRemoveToCart", {
+            method: "PUT",
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: `drinkId=${drinkId}`
+        });
+
         if (response.ok) {
             var button = document.querySelector(`button[data-drink-id='${drinkId}']`);
             if (button) {
@@ -75,36 +70,37 @@ function addToCart(drinkId) {
                     button.querySelector('.button-text').textContent = 'Выбрать';
                 }
             }
-            checkSelectedDrinks();
+            await checkSelectedDrinks();
         } else {
             console.error("Ошибка при добавлении/удалении напитка");
         }
-    });
+    } catch (error) {
+        console.error('Ошибка:', error);
+    }
 }
 
+async function updateBucketButton() {
+    try {
+        const response = await fetch('/Store/GetCartJson');
+        const cart = await response.json();
+        var selectedCount = cart.length;
+        var cartButton = document.getElementById('cartButton');
 
-function updateBucketButton() {
-    fetch('/Store/GetCartJson')
-        .then(response => response.json())
-        .then(cart => {
-            var selectedCount = cart.length;
-            var cartButton = document.getElementById('cartButton');
-
-            if (selectedCount === 0) {
-                cartButton.classList.remove('bucket-selected');
-                cartButton.classList.add('bucket-disabled');
-                cartButton.querySelector('.button-text').textContent = 'Не выбрано';
-                cartButton.dataset.disabled = 'true';
-                console.log(`Бакет опустел`);
-            } else {
-                cartButton.classList.remove('bucket-disabled');
-                cartButton.classList.add('bucket-selected');
-                cartButton.querySelector('.button-text').textContent = `Выбрано: ${selectedCount}`;
-                cartButton.dataset.disabled = 'false';
-                console.log(`Бакет содержит: ${selectedCount}`);
-            }
-        })
-        .catch(error => console.error('Ошибка:', error));
+        if (selectedCount === 0) {
+            cartButton.classList.remove('bucket-selected');
+            cartButton.classList.add('bucket-disabled');
+            cartButton.querySelector('.button-text').textContent = 'Не выбрано';
+            cartButton.dataset.disabled = 'true';
+        } else {
+            cartButton.classList.remove('bucket-disabled');
+            cartButton.classList.add('bucket-selected');
+            cartButton.querySelector('.button-text').textContent = `Выбрано: ${selectedCount}`;
+            cartButton.dataset.disabled = 'false';
+        }
+        console.log(cartButton.classList);
+    } catch (error) {
+        console.error('Ошибка:', error);
+    }
 }
 
 function handleCartButtonClick() {
@@ -112,11 +108,10 @@ function handleCartButtonClick() {
     if (cartButton.dataset.disabled === 'false') {
         window.location.href = '/Bucket/Bucket';
     }
-    
 }
 
 // Инициализация слайдера
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
     var slider = document.getElementById('slider');
 
     if (slider) {
@@ -160,12 +155,12 @@ document.addEventListener("DOMContentLoaded", () => {
         // Обновление отображаемых значений
         updateMinPriceValue(minPrice);
         updateMaxPriceValue(maxPrice);
-        filterDrinks();
+        await filterDrinks();
     } else {
         console.error('Слайдер не найден на странице');
     }
 
     // Инициализация других функций
-    checkSelectedDrinks();
-    updateBucketButton();  // Обновляем кнопку корзины при загрузке страницы
+    await checkSelectedDrinks();
+    await updateBucketButton();  // Обновляем кнопку корзины при загрузке страницы
 });

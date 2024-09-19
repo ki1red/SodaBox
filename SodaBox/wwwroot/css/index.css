@@ -80,3 +80,57 @@ body {
     border-color: lime;
     color: black;
 }
+
+/* Контейнер для фильтров и кнопки корзины */
+.filter-container {
+    display: flex;
+    justify-content: space-between; /* Распределение по горизонтали */
+    align-items: center; /* Вертикальное выравнивание */
+    margin-bottom: 20px; /* Отступ снизу */
+    margin-top: 40px;
+}
+
+/* Блок для списка брендов */
+.brand-filter {
+    flex: 1 1 20%; /* 1/5 ширины контейнера */
+    font-size: 16px;
+}
+
+.brand-filter select {
+    font-size: 16px;
+    width: 100%; /* Займёт всю ширину контейнера brand-filter */
+    height: 80px; /* Увеличиваем высоту в два раза (например, 80px) */
+    font-size: 16px; /* Размер текста внутри выпадающего списка */
+    padding: 10px; /* Добавляем отступы внутри списка для лучшего вида */
+}
+
+/* Блок для ползунка цен */
+.price-slider {
+    flex: 2 1 40%; /* 2/5 ширины контейнера */
+    margin-left: 20px; /* Отступ слева для небольшого разделения */
+}
+
+/* Свободное пространство */
+.cart-button-container {
+    flex: 1 1 20%; /* 1/5 ширины контейнера для кнопки корзины */
+    text-align: right; /* Кнопка корзины справа */
+}
+
+/* Стиль для кнопки корзины */
+/*#cartButton {
+    width: auto;
+    padding: 10px 20px;
+    background-color: lightgray;
+    border-color: lightgray;
+    color: darkgray;
+    cursor: not-allowed;
+    border-radius: 5px;
+}*/
+
+#minPriceValue, #maxPriceValue {
+    display: none;
+}
+
+h1 {
+    margin-top: 20px; /* Добавляем отступ сверху для заголовка */
+}

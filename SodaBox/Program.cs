@@ -1,14 +1,23 @@
 using Microsoft.EntityFrameworkCore;
 using SodaBox.DataAccess;
+using SodaBox.DataAccess.IRepositories;
+using SodaBox.DataAccess.Repositories;
 using SodaBox.Services.Classes;
 using SodaBox.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Репозитории
+builder.Services.AddScoped<IDrinkRepository, DrinkRepository>();
+builder.Services.AddScoped<IBrandRepository, BrandRepository>();
+
 builder.Services.AddControllersWithViews();
+
+// БД
 builder.Services.AddDbContext<VendingMachineContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("FirstConnection")));
 
+// Сервисы
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddSingleton<ICartService, CartService>();
 builder.Services.AddSingleton<ITransactionService, TransactionService>();

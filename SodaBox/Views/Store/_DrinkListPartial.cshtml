@@ -1,26 +1,33 @@
 ﻿
 @model IEnumerable<SodaBox.DataAccess.Entities.Drink>
 
-<div class="drinks-grid">
-    @foreach (var drink in Model)
-    {
-        <div class="drink-item">
-            <img src="@Url.Content($"~/{drink.imagePath}")" alt="@drink.name" />
-            <h3>@drink.name</h3>
-            <p>@drink.price руб.</p>
-            @* <p>Остаток: @drink.quantity</p> *@
-            @if (drink.quantity > 0)
-            {
-                <button data-drink-id="@drink.id" class="button selectdrink-available" onclick="addToCart(@drink.id)">
-                    <span class="button-text">Выбрать</span>
-                </button>
-            }
-            else
-            {
-                <button class="button selectdrink-disabled" disabled>
-                    <span class="button-text">Закончилось</span>
-                </button>
-            }
-        </div>
-    }
-</div>
+@if (Model.Any())
+{
+    <div class="drinks-grid">
+        @foreach (var drink in Model)
+        {
+            <div class="drink-item">
+                <img src="@Url.Content($"~/{drink.imagePath}")" alt="@drink.name" />
+                <h3>@drink.name</h3>
+                <p>@drink.price руб.</p>
+                @* <p>Остаток: @drink.quantity</p> *@
+                @if (drink.quantity > 0)
+                {
+                    <button data-drink-id="@drink.id" class="button selectdrink-available" onclick="addToCart(@drink.id)">
+                        <span class="button-text">Выбрать</span>
+                    </button>
+                }
+                else
+                {
+                    <button class="button selectdrink-disabled" disabled>
+                        <span class="button-text">Закончилось</span>
+                    </button>
+                }
+            </div>
+        }
+    </div>
+}
+else
+{
+    <p>Нет доступных напитков.</p>
+}

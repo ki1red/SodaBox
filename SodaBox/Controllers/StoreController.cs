@@ -10,18 +10,22 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using SodaBox.Services.Interfaces;
 using SodaBox.Services.Classes;
+using SodaBox.DataAccess.IRepositories; // Добавляем интерфейс репозитория
 
 public class StoreController : Controller
 {
-    private readonly VendingMachineContext _context;
     private readonly ICartService _cartService;
     private readonly ITransactionService _transactionService;
+    private readonly IDrinkRepository _drinkRepository;
+    private readonly IBrandRepository _brandRepository;
 
-    public StoreController(VendingMachineContext context, ICartService cartService, ITransactionService transactionService)
+    // Изменяем конструктор, чтобы получать репозиторий через DI
+    public StoreController(ICartService cartService, ITransactionService transactionService, IDrinkRepository drinkRepository, IBrandRepository brandRepository)
     {
-        _context = context;
         _cartService = cartService;
         _transactionService = transactionService;
+        _drinkRepository = drinkRepository;
+        _brandRepository = brandRepository;
     }
 
     // Главная страница магазина
@@ -40,19 +44,21 @@ public class StoreController : Controller
 
         _transactionService.EndTransaction();
 
-        var brands = await _context.brands.ToListAsync();
-        var drinks = await _context.drinks.Include(d => d.brand).ToListAsync(); // Получаем все напитки
-
+        // Используем репозиторий для получения списка брендов и напитков
+        var brands = await _brandRepository.GetAllBrandsAsync();
+        var drinks = await _drinkRepository.GetAllDrinksAsync();
+        Console.WriteLine(brands.ToList().Count);
+        Console.WriteLine(drinks.ToList().Count);
         var viewModel = new StoreViewModel
         {
-            brands = brands,
-            drinks = drinks
+            brands = brands.ToList(),
+            drinks = drinks.ToList()
         };
 
         return View(viewModel);
     }
 
-    public IActionResult Admin()
+    public async Task<IActionResult> Admin()
     {
         if (_transactionService.IsTransactionCompleted())
         {
@@ -60,9 +66,10 @@ public class StoreController : Controller
         }
         _transactionService.EndTransaction();
 
+        var drinks = await _drinkRepository.GetAllDrinksAsync();
         var viewModel = new AdminViewModel
         {
-            drinks = _context.drinks.ToList()
+            drinks = drinks.ToList()
         };
 
         return View(viewModel);
@@ -70,35 +77,20 @@ public class StoreController : Controller
 
     // API для фильтрации
     [HttpGet]
-    public async Task<IActionResult> FilterDrinks(int? brandId, decimal? minPrice, decimal? maxPrice)
+    public async Task<IActionResult> FilterDrinks(int brandId, int minPrice, int maxPrice)
     {
-        var drinksQuery = _context.drinks.Include(d => d.brand).AsQueryable();
 
-        if (brandId.HasValue && brandId.Value > 0)
-        {
-            drinksQuery = drinksQuery.Where(d => d.brandId == brandId.Value);
-        }
-
-        if (minPrice.HasValue)
-        {
-            drinksQuery = drinksQuery.Where(d => d.price >= minPrice.Value);
-        }
-
-        if (maxPrice.HasValue)
-        {
-            drinksQuery = drinksQuery.Where(d => d.price <= maxPrice.Value);
-        }
-
-        var drinks = await drinksQuery.ToListAsync();
+        var drinks = await _drinkRepository.SortByDrinksAsync(brandId, minPrice, maxPrice);
 
         return PartialView("_DrinkListPartial", drinks);
     }
 
     // Добавление напитка в корзину
     [HttpPut]
-    public IActionResult AddOrRemoveToCart(int drinkId)
+    public async Task<IActionResult> AddOrRemoveToCart(int drinkId)
     {
-        var drink = _context.drinks.Find(drinkId);
+        var drink = await _drinkRepository.GetDrinkByIdAsync(drinkId); // Используем репозиторий
+        Console.WriteLine(drink.ToString());
         if (drink == null)
         {
             Console.WriteLine("Напиток не найден");
@@ -119,31 +111,14 @@ public class StoreController : Controller
         return Ok();
     }
 
-    [HttpGet]
-    public IActionResult GetCartJson()
-    {
-        var cart = _cartService.GetCart();
-        return Json(cart);
-    }
-
     [HttpPost]
-    public IActionResult UpdateDrinksStock([FromBody] Dictionary<int, int>? drinks = null)
+    public async Task<IActionResult> UpdateDrinksStock([FromBody] Dictionary<int, int>? drinks = null)
     {
         if (drinks != null)
         {
             foreach (var drink in drinks)
             {
-                if (drink.Value < 0)
-                {
-                    return BadRequest("Количество напитков не может быть отрицательным");
-                }
-
-                var drinkInDb = _context.drinks.Find(drink.Key);
-                if (drinkInDb != null)
-                {
-                    drinkInDb.quantity = drink.Value;
-                }
-                _context.SaveChanges();
+                await _drinkRepository.UpdateQuantityAsync(drink.Key, drink.Value);
             }
         }
         else
@@ -153,20 +128,19 @@ public class StoreController : Controller
             {
                 foreach (var item in cart)
                 {
-                    var drinkInDb = _context.drinks.Find(item.drink.id);
-                    if (drinkInDb != null)
-                    {
-                        drinkInDb.quantity -= item.quantity;
-
-                        if (drinkInDb.quantity < 0)
-                            drinkInDb.quantity = 0;
-
-                        _context.SaveChanges();
-                    }
+                    var drinkInDb = await _drinkRepository.GetDrinkByIdAsync(item.drink.id);
+                    await _drinkRepository.UpdateQuantityAsync(drinkInDb.id, drinkInDb.quantity - item.quantity);
                 }
             }
         }
         _cartService.ClearCart();
         return Ok();
+    }
+
+    [HttpGet]
+    public IActionResult GetCartJson()
+    {
+        var cart = _cartService.GetCart();
+        return Json(cart);
     }
 }
