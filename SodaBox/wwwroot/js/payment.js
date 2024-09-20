@@ -17,10 +17,11 @@ function updateAmountStatus() {
         amountStatus.classList.add('red');
     }
 }
-function updateCoin(denomination, change) {
+async function updateCoin(denomination, change) {
     const coinSumElement = document.getElementById('coin-sum-' + denomination);
     const coinInputElement = document.getElementById('coin-input-' + denomination);
     let coinCount = parseInt(coinInputElement.value, 10);
+
     // Обновляем количество монет
     coinCount += change;
     if (coinCount < 0) {
@@ -31,9 +32,14 @@ function updateCoin(denomination, change) {
     coinSumElement.textContent = (denomination * coinCount);
     coinInputElement.value = coinCount; // Обновляем значение текстового поля
 
+    // Формируем модель для отправки на сервер
+    const coins = {};
+    coins[denomination] = coinCount;
+
     updateCurrentAmount();
     updateAmountStatus();
 }
+
 
 function updateCoinFromInput(denomination) {
     const coinInputElement = document.getElementById('coin-input-' + denomination);
@@ -76,30 +82,55 @@ function updateCurrentAmount() {
     updatePayButton();
 }
 
-function handlePayButtonClick() {
+async function updateCoinInDb() {
+    const coins = {
+        1: parseInt(document.getElementById('coin-input-1').value, 10),
+        2: parseInt(document.getElementById('coin-input-2').value, 10),
+        5: parseInt(document.getElementById('coin-input-5').value, 10),
+        10: parseInt(document.getElementById('coin-input-10').value, 10)
+    };
+    try {
+        const response = await fetch('/Payment/UpdateCoinQuantity', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+            },
+            body: JSON.stringify(coins)
+        });
+        console.log(coins);
+        const result = await response.json();
+
+        if (!result.success) {
+            console.error('Ошибка при обновлении монет в базе данных.');
+        }
+    } catch (error) {
+        console.error('Ошибка при выполнении запроса:', error);
+    }
+}
+async function handlePayButtonClick() {
     const payButton = document.getElementById('payButton');
     const sum = parseFloat(document.getElementById('currentAmount').textContent);
 
     if (payButton.dataset.disabled === 'false') {
-        fetch('/Payment/Pay', {
+        await updateCoinInDb();
+        await fetch('/Payment/Pay', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
             },
             body: JSON.stringify(sum)
-        })
-            .then(response => response.json())
-            .then(result => {
-                if (result.redirectUrl) {
-                    window.location.href = result.redirectUrl;
-                } else {
-                    console.error('Ошибка:', result);
-                }
-            })
-            .catch(error => {
-                console.error('Ошибка:', error);
-            });
+            }).then(response => response.json())
+                .then(result => {
+                    if (result.redirectUrl) {
+                        window.location.href = result.redirectUrl;
+                    } else {
+                        console.error('Ошибка:', result);
+                    }
+                }).catch(error => {
+                        console.error('Ошибка:', error);
+                    });
     }
 }
 

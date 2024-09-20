@@ -35,7 +35,7 @@ function updateCartFromInput(drinkId) {
 function handlePayButtonClick() {
     const payButton = document.getElementById('payButton');
 
-    if (payButton.dataset.disabled === 'false') {
+    if (payButton.disabled === false) {
 
         fetch('/Bucket/Payment', {
             method: 'POST',

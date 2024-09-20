@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SodaBox.DataAccess.IRepositories;
 using SodaBox.Models;
 using SodaBox.Services.Classes;
 using SodaBox.Services.Interfaces;
@@ -9,9 +10,11 @@ using System.Net.Http;
 public class PaymentController : Controller
 {
     private readonly ITransactionService _transactionService;
-    public PaymentController(ITransactionService transactionService)
+    private readonly ICoinRepository _coinRepository;
+    public PaymentController(ITransactionService transactionService, ICoinRepository coinRepository)
     {
         _transactionService = transactionService;
+        _coinRepository = coinRepository;
     }
     public IActionResult Payment()
     {
@@ -35,6 +38,21 @@ public class PaymentController : Controller
         };
 
         return View(viewModel);
+    }
+
+    [HttpPut]
+    public async Task<IActionResult> UpdateCoinQuantity([FromBody] Dictionary<int,int> coins)
+    {
+        if (coins == null)
+            return BadRequest();
+
+        foreach (var coin in coins)
+        {
+            bool response = await _coinRepository.AddCoinsAsync(coin.Key, coin.Value);
+            return BadRequest(response);
+        }
+
+        return Ok();
     }
 
     [HttpPost]

@@ -10,6 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Репозитории
 builder.Services.AddScoped<IDrinkRepository, DrinkRepository>();
 builder.Services.AddScoped<IBrandRepository, BrandRepository>();
+builder.Services.AddScoped<ICoinRepository, CoinRepository>();
 
 builder.Services.AddControllersWithViews();
 
