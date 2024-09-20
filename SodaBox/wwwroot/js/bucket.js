@@ -8,7 +8,7 @@ function updateCart(drinkId, quantity) {
     }).then(response => {
         if (response.ok) {
             location.reload(); // Перезагружаем страницу для обновления данных
-            updatePaymentButton();
+            
         } else {
             alert('Failed to update cart');
         }
@@ -21,14 +21,14 @@ function updateCartFromInput(drinkId) {
     const inputElement = document.getElementById('cart-input-' + drinkId);
     let quantity = parseInt(inputElement.value, 10);
 
-    if (isNaN(quantity) || quantity < 1) {
+    if (isNaN(quantity) || quantity < inputElement.min) {
         quantity = 1; // Минимальное значение — 1
         inputElement.value = 1;
-    } else if (quantity > maxQuantity) {
-        quantity = maxQuantity; // Максимальное значение — количество напитков на складе
-        inputElement.value = maxQuantity; // Корректируем значение в поле
+    } else if (quantity > inputElement.max) {
+        quantity = inputElement.max; // Максимальное значение — количество напитков на складе
+        inputElement.value = inputElement.max; // Корректируем значение в поле
     }
-
+    updatePaymentButton();
     updateCart(drinkId, quantity); // Обновляем корзину с новым количеством
 }
 
@@ -60,23 +60,33 @@ function handlePayButtonClick() {
 }
 
 function updatePaymentButton() {
-    fetch('/Store/GetCartJson')
-        .then(response => response.json())
-        .then(cart => {
-            var selectedCount = cart.length;
-            var payButton = document.getElementById('payButton');
+    let isValid = true;
+    document.querySelectorAll('input[type="number"]').forEach(input => {
+        if (input.value < input.min || input.value > input.max) {
+            isValid = false;
+        }
+    });
 
-            if (selectedCount === 0) {
-                payButton.classList.remove('next-enabled');
-                payButton.classList.add('next-disabled');
-                payButton.dataset.disabled = 'true';
-            } else {
-                payButton.classList.remove('next-disabled');
-                payButton.classList.add('next-enabled');
-                payButton.dataset.disabled = 'false';
-            }
-        })
-        .catch(error => console.error('Ошибка:', error));
+    var payButton = document.getElementById('payButton');
+    if (payButton) {
+        fetch('/Store/GetCartJson')
+            .then(response => response.json())
+            .then(cart => {
+                var selectedCount = cart.length;
+                if (isValid && selectedCount > 0) {
+                    payButton.classList.remove('next-disabled');
+                    payButton.classList.add('next-enabled');
+                    payButton.disabled = false;
+                } else {
+                    payButton.classList.remove('next-enabled');
+                    payButton.classList.add('next-disabled');
+                    payButton.disabled = true;
+                }
+            })
+            .catch(error => console.error('Ошибка:', error));
+    } else {
+        console.error("Не найдена кнопка оплаты");
+    }
 }
 
 function deleteFromCart(drinkId) {
@@ -95,12 +105,7 @@ function deleteFromCart(drinkId) {
 
 document.querySelectorAll('input[type="number"]').forEach(input => {
     input.addEventListener('input', function () {
-        // Удаляем любые нечисловые символы, кроме цифр
         this.value = this.value.replace(/[^0-9]/g, '');
-
-        // Запрещаем ввод значения меньше 1
-        if (this.value === '' || parseInt(this.value, 10) < 1) {
-            this.value = 1;
-        }
+        updatePaymentButton();
     });
 });

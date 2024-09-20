@@ -72,7 +72,7 @@ else
 
 
     @Html.AntiForgeryToken()
-    <button id="payButton" class="button next-disabled" data-disabled="true" onclick="handlePayButtonClick()">
+    <button id="payButton" class="button next-disabled" onclick="handlePayButtonClick()" disabled>
         <span class="button-text">Оплата</span>
     </button>
 </div>
