@@ -4,7 +4,7 @@
 
 @if (Model.cartItems == null || !Model.cartItems.Any())
 {
-    <p>Ваша корзина пуста</p>
+    <p>У вас нет ни одного товара, вернитесь на страницу каталога</p>
 }
 else
 {
@@ -15,7 +15,7 @@ else
     <table class="table">
         <thead>
             <tr>
-                <th>Напиток</th>
+                <th>Товар</th>
                 <th>Количество</th>
                 <th>Цена</th>
                 <th>Итог</th>
@@ -26,11 +26,11 @@ else
             @foreach (var item in Model.cartItems)
             {
                 <tr>
-                    <td>
+                    <td style="vertical-align: middle;">
                         <img src="@Url.Content($"~/{item.drink.imagePath}")" alt="@item.drink.name" style="width: 100px; height: 150px; margin-right: 10px;" />
                         @item.drink.name
                     </td>
-                    <td>
+                    <td style="vertical-align: middle;">
                         <button class="quantity-button" onclick="updateCart(@item.drink.id, Math.max(@item.quantity - 1, 1))"
                         @if (item.quantity <= 1)
                         {
@@ -48,9 +48,9 @@ else
                         }>+</button>
                     </td>
 
-                    <td>@item.drink.price руб.</td>
-                    <td>@(item.drink.price * item.quantity) руб.</td>
-                    <td>
+                    <td style="vertical-align: middle;">@item.drink.price руб.</td>
+                    <td style="vertical-align: middle;">@(item.drink.price * item.quantity) руб.</td>
+                    <td style="vertical-align: middle;">
                         <button onclick="deleteFromCart(@item.drink.id)" class="button-delete">
                             <img src="@Url.Content("~/images/bucket.svg")" alt="Удалить" />
                         </button>
@@ -60,7 +60,7 @@ else
         </tbody>
     </table>
 
-    <p>Общая сумма: @Model.sum руб.</p>
+    <p style="text-align: right;">Итоговая сумма: @Model.sum руб.</p>
 
     
 }

@@ -5,8 +5,8 @@ body {
 }
 
 .bucket-item img {
-    width: 100px; /* Ширина изображения */
-    height: 150px; /* Высота изображения */
+    width: 90px; /* Ширина изображения */
+    height: 135px; /* Высота изображения */
     margin-right: 10px;
 }
 
@@ -60,8 +60,8 @@ body {
 }
 
 .button-delete img {
-    width: 20px;
-    height: 20px;
+    width: 40px;
+    height: 40px;
 }
 
 .quantity-button {
