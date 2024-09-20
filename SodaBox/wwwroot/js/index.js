@@ -97,7 +97,6 @@ async function updateBucketButton() {
             cartButton.querySelector('.button-text').textContent = `Выбрано: ${selectedCount}`;
             cartButton.dataset.disabled = 'false';
         }
-        console.log(cartButton.classList);
     } catch (error) {
         console.error('Ошибка:', error);
     }

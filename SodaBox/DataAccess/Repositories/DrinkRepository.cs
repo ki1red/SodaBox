@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SodaBox.DataAccess.Entities;
 using SodaBox.DataAccess.IRepositories;
 using System.Threading.Tasks;
@@ -50,33 +52,34 @@ namespace SodaBox.DataAccess.Repositories
         }
 
         // Обновить цену напитка
-        public async Task UpdatePriceAsync(int drinkId, int newPrice)
+        public async Task<bool> UpdatePriceAsync(int drinkId, int newPrice)
         {
             var drink = await GetDrinkByIdAsync(drinkId);
-            if (drink != null)
+            if (drink != null && newPrice > 0)
             {
                 drink.price = newPrice;
                 await SaveChangesAsync();
+                return true;
             }
+            return false;
         }
 
         // Обновить количество напитка
-        public async Task UpdateQuantityAsync(int drinkId, int newQuantity)
+        public async Task<bool> UpdateQuantityAsync(int drinkId, int newQuantity)
         {
             var drink = await GetDrinkByIdAsync(drinkId);
 
-            if (newQuantity < 0)
-                newQuantity = 0;
-
-            if (drink != null)
+            if (drink != null && newQuantity >= 0)
             {
                 drink.quantity = newQuantity;
                 await SaveChangesAsync();
+                return true;
             }
+            return false;
         }
 
         // Обновить позицию (id) напитка
-        public async Task SwapPositionsAsync(int firstId, int secondId)
+        public async Task<bool> SwapPositionsAsync(int firstId, int secondId)
         {
             // Получаем напитки по их идентификаторам
             var firstDrink = await GetDrinkByIdAsync(firstId);
@@ -94,7 +97,9 @@ namespace SodaBox.DataAccess.Repositories
 
                 // Сохраняем изменения в базе данных
                 await SaveChangesAsync();
+                return true;
             }
+            return false;
         }
 
 

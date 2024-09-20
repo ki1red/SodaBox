@@ -9,18 +9,24 @@
             <div class="drink-item">
                 <img src="@Url.Content($"~/{drink.imagePath}")" alt="@drink.name" />
                 <h3>@drink.name</h3>
-                <p>@drink.price руб.</p>
                 <p>
-                    <button type="button" class="quantity-button" data-drink-id="@drink.id" onclick="updateQuantity(@drink.id, -1)">-</button>
-                    <input type="number" id="quantity-@drink.id" name="drinks[@drink.id].quantity" value="@drink.quantity" min="0" step="1" style="width: 60px; text-align: center;" />
-                    <button type="button" class="quantity-button" data-drink-id="@drink.id" onclick="updateQuantity(@drink.id, 1)">+</button>
+                    <input type="number" id="price-@drink.id" name="drinks-price[@drink.id].price" value="@drink.price" min="1" step="1" style="width: 60px; text-align: center;" /> руб.
+                </p>
+                <p>
+                    <button type="button" class="quantity-button" data-drink-id="@drink.id" onclick="clickButtonToUpdateQuantity(@drink.id, -1)">-</button>
+                    <input type="number" id="quantity-@drink.id" name="drinks-quantity[@drink.id].quantity" value="@drink.quantity" min="0" step="1" style="width: 60px; text-align: center;" />
+                    <button type="button" class="quantity-button" data-drink-id="@drink.id" onclick="clickButtonToUpdateQuantity(@drink.id, 1)">+</button>
                 </p>
             </div>
         }
     </div>
     
-    <div style="text-align: right; margin-bottom: 20px;">
-        <button id="saveButton" class="button save" type="button" onclick="saveQuantities()" disabled>
+    <div class="button-container">
+        <button id="storeButton" class="button back" type="button" onclick="window.location.href = '/Store/Index'">
+            <span class="button-text">Вернуться</span>
+        </button>
+
+        <button id="saveButton" class="button save-enabled" type="button" onclick="saveData()" disabled>
             <span class="button-text">Сохранить</span>
         </button>
     </div>
