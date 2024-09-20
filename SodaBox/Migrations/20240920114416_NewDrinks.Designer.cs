@@ -12,8 +12,8 @@ using SodaBox.DataAccess;
 namespace SodaBox.Migrations
 {
     [DbContext(typeof(VendingMachineContext))]
-    [Migration("20240919133732_NewDrinks2")]
-    partial class NewDrinks2
+    [Migration("20240920114416_NewDrinks")]
+    partial class NewDrinks
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

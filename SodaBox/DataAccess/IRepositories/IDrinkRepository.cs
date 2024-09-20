@@ -9,6 +9,7 @@ namespace SodaBox.DataAccess.IRepositories
         Task<IEnumerable<Drink>> SortByDrinksAsync(int brandId, int minPrice, int maxPrice);
         Task<bool> UpdatePriceAsync(int drinkId, int newPrice);
         Task<bool> UpdateQuantityAsync(int drinkId, int newQuantity);
+        Task<bool> UpdateAllDrinksPositions(Dictionary<int, int> newPositions);
         Task<bool> SwapPositionsAsync(int oldId, int newId);
         Task SaveChangesAsync();
     }

@@ -27,5 +27,6 @@ namespace SodaBox.DataAccess.Entities
         [Required]
         [StringLength(500)]
         public string imagePath { get; set; }
+
     }
 }

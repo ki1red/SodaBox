@@ -48,8 +48,6 @@ public class StoreController : Controller
         // Используем репозиторий для получения списка брендов и напитков
         var brands = await _brandRepository.GetAllBrandsAsync();
         var drinks = await _drinkRepository.GetAllDrinksAsync();
-        Console.WriteLine(brands.ToList().Count);
-        Console.WriteLine(drinks.ToList().Count);
         var viewModel = new StoreViewModel
         {
             brands = brands.ToList(),
@@ -91,23 +89,14 @@ public class StoreController : Controller
     public async Task<IActionResult> AddOrRemoveToCart(int drinkId)
     {
         var drink = await _drinkRepository.GetDrinkByIdAsync(drinkId); // Используем репозиторий
-        Console.WriteLine(drink.ToString());
+
         if (drink == null)
-        {
-            Console.WriteLine("Напиток не найден");
             return NotFound();
-        }
 
         if (!_cartService.IsHasCart(drink))
-        {
-            Console.WriteLine($"Добавляем напиток в корзину: {drink.name}");
             _cartService.AddToCart(drink);
-        }
         else
-        {
-            Console.WriteLine($"Удаляем напиток из корзины: {drink.name}");
             _cartService.RemoveFromCart(drink);
-        }
 
         return Ok();
     }
@@ -121,17 +110,12 @@ public class StoreController : Controller
             {
                 bool response = await _drinkRepository.UpdateQuantityAsync(drink.Key, drink.Value);
                 if (!response)
-                {
-                    Console.WriteLine($"Некорректное количество {drink.Key} {drink.Value}");
                     return BadRequest();
-                }
             }
-            Console.WriteLine("Количество обновлено");
         }
         else
-        {
-            Console.WriteLine("Количество не обновлено");
-        }
+            return BadRequest();
+
         _cartService.ClearCart();
         return Ok();
     }
@@ -145,17 +129,30 @@ public class StoreController : Controller
             {
                 bool response = await _drinkRepository.UpdatePriceAsync(drink.Key, drink.Value);
                 if (!response)
-                {
-                    Console.WriteLine($"Некорректная цена {drink.Key} {drink.Value}");
                     return BadRequest();
-                }
             }
-            Console.WriteLine("Цены обновлены");
         }
         else
-        {
-            Console.WriteLine("Цены не обновлены");
             return BadRequest();
+
+        _cartService.ClearCart();
+        return Ok();
+    }
+
+    [HttpPut]
+    public async Task<IActionResult> UpdateDrinksPositions([FromBody] List<int>? drinks = null)
+    {
+        if (drinks != null && drinks.Count > 0)
+        {
+            Dictionary<int, int> positions = drinks
+                .Select((value, index) => new { Index = index + 1, Value = value }) // Индексация с 1
+                .ToDictionary(item => item.Index, item => item.Value);
+
+            var response = await _drinkRepository.UpdateAllDrinksPositions(positions);
+            if (!response)
+                return BadRequest();
+
+            Console.WriteLine("Напитки обновлены");
         }
         _cartService.ClearCart();
         return Ok();

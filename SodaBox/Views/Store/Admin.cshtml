@@ -6,7 +6,7 @@
     <div id="drinksContainer" class="drinks-grid">
         @foreach (var drink in Model.drinks)
         {
-            <div class="drink-item">
+            <div class="drink-item" id="drink-@drink.id" draggable="true" ondragstart="drag(event)" ondrop="drop(event)" ondragover="allowDrop(event)">
                 <img src="@Url.Content($"~/{drink.imagePath}")" alt="@drink.name" />
                 <h3>@drink.name</h3>
                 <p>
@@ -20,6 +20,7 @@
             </div>
         }
     </div>
+
     
     <div class="button-container">
         <button id="storeButton" class="button back" type="button" onclick="window.location.href = '/Store/Index'">

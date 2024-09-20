@@ -13,6 +13,13 @@ body {
     text-align: center;
     border: 1px solid #ddd; /* Тонкая рамка */
     padding: 10px;
+    background-color: #fff; /* Белый фон */
+    cursor: move; /* Указатель, что элемент можно перетаскивать */
+    transition: background-color 0.3s; /* Плавный переход цвета фона */
+}
+
+.drink-item.dragging {
+    opacity: 0.5; /* Прозрачность при перетаскивании */
 }
 
 .drink-item img {
@@ -53,6 +60,7 @@ body {
     border-color: lime;
     color: black;
 }
+
 .button.save-disabled {
     background-color: lightgray;
     border-color: lightgray;
