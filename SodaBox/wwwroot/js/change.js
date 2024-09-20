@@ -4,22 +4,9 @@
     const changeContainer = document.getElementById("changeContainer");
 
     if (amount > 0) {
-        const change = calculateChange(amount, denominations);
         displayChange(change);
     }
 });
-
-function calculateChange(amount, denominations) {
-    const result = {};
-
-    for (let denom of denominations) {
-        if (amount >= denom) {
-            result[denom] = Math.floor(amount / denom);
-            amount %= denom;
-        }
-    }
-    return result;
-}
 
 function displayChange(change) {
     const changeContainer = document.getElementById("changeContainer");

@@ -1,28 +1,29 @@
-﻿using SodaBox.Services.Interfaces;
+﻿using SodaBox.DataAccess.IRepositories;
+using SodaBox.Services.Interfaces;
 
 namespace SodaBox.Services.Classes
 {
     public class TransactionService : ITransactionService
     {
+        private readonly IOrderRepository _orderRepository;
+        private readonly ICartService _cartService;
+
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly string _transactionSessionKey;
+
         private readonly string _transactionRequestKey;
         private readonly string _transactionCompleteKey;
 
         public int? requestSum => _httpContextAccessor.HttpContext.Session.GetInt32(_transactionRequestKey);
         public int? completeSum => _httpContextAccessor.HttpContext.Session.GetInt32(_transactionCompleteKey);
 
-        public TransactionService(IHttpContextAccessor? httpContextAccessor = null, string? transactionSessionKey = null)
+        public TransactionService(IOrderRepository orderRepository, ICartService cartService)
         {
-            if (httpContextAccessor == null)
-                _httpContextAccessor = new HttpContextAccessor();
-            else
-                _httpContextAccessor = httpContextAccessor;
+            _orderRepository = orderRepository;
+            _cartService = cartService;
 
-            if (transactionSessionKey == null)
-                _transactionSessionKey = Guid.NewGuid().ToString();
-            else
-                _transactionSessionKey = transactionSessionKey;
+            _httpContextAccessor = new HttpContextAccessor();
+            _transactionSessionKey = Guid.NewGuid().ToString();
 
             _transactionRequestKey = Guid.NewGuid().ToString();
             _transactionCompleteKey = Guid.NewGuid().ToString();

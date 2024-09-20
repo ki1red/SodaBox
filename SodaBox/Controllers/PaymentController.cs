@@ -63,22 +63,28 @@ public class PaymentController : Controller
         return Ok(new { redirectUrl = Url.Action("Change", "Payment") });
     }
 
-    public IActionResult Change()
+    public async Task<IActionResult> Change()
     {
         if (!_transactionService.IsTransactionCompleted())
         {
             return RedirectToAction("Index", "Store");
         }
 
-
         Response.Headers.Append("Cache-Control", "no-store");
         Response.Headers.Append("Pragma", "no-cache");
         Response.Headers.Append("Expires", "0");
 
+        var coins = (await _coinRepository.TakeCoinsAsync(_transactionService.completeSum.Value - _transactionService.requestSum.Value)).ToList();
+        if (coins == null || coins.Count == 0)
+        {
+            return View("NoChange");
+        }
+
         var viewModel = new ChangeViewModel
         {
             totalAmount = _transactionService.requestSum.Value,
-            currentAmount = _transactionService.completeSum.Value
+            currentAmount = _transactionService.completeSum.Value,
+            coins = coins
         };
         return View(viewModel);
     }

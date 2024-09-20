@@ -1,15 +1,11 @@
 ﻿@model ChangeViewModel
 
 <div class="change-wrapper">
+    <h1 class="center-text">Спасибо за покупку!</h1>
     @if (Model.change > 0)
     {
-        <h1 class="center-text">Спасибо за покупку!</h1>
         <p class="center-text">Ваша сдача: @Model.change руб.</p>
         <div id="changeContainer" class="change-container"></div>
-    }
-    else
-    {
-        <h1 class="center-text">Спасибо за покупку!</h1>
     }
 
     <div class="button-container">
