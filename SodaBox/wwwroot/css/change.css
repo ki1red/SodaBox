@@ -28,11 +28,11 @@ body {
 }
 
 /* Стили для изображений */
-.change-item img {
-    width: 50px; /* Размеры изображения */
-    height: 50px;
-    margin-right: 10px; /* Отступ справа от изображения */
-}
+/*.change-item img {
+    width: 50px;*/ /* Размеры изображения */
+    /*height: 50px;
+    margin-right: 10px;*/ /* Отступ справа от изображения */
+/*}*/
 
 /* Стили для кнопок */
 .button-container {

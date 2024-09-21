@@ -5,7 +5,6 @@ namespace SodaBox.Services.Classes
 {
     public class TransactionService : ITransactionService
     {
-        private readonly IOrderRepository _orderRepository;
         private readonly ICartService _cartService;
 
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -14,12 +13,13 @@ namespace SodaBox.Services.Classes
         private readonly string _transactionRequestKey;
         private readonly string _transactionCompleteKey;
 
+        public bool isStart => requestSum.HasValue;
+        public bool isComplete => completeSum.HasValue;
         public int? requestSum => _httpContextAccessor.HttpContext.Session.GetInt32(_transactionRequestKey);
         public int? completeSum => _httpContextAccessor.HttpContext.Session.GetInt32(_transactionCompleteKey);
 
-        public TransactionService(IOrderRepository orderRepository, ICartService cartService)
+        public TransactionService(ICartService cartService)
         {
-            _orderRepository = orderRepository;
             _cartService = cartService;
 
             _httpContextAccessor = new HttpContextAccessor();
@@ -29,24 +29,18 @@ namespace SodaBox.Services.Classes
             _transactionCompleteKey = Guid.NewGuid().ToString();
         }
 
-        public void StartTransaction(int sum)
+        public void StartTransaction(int totalAmount)
         {
-            EndTransaction();
             _httpContextAccessor.HttpContext.Session.SetString(_transactionSessionKey, "true");
-            _httpContextAccessor.HttpContext.Session.SetInt32(_transactionRequestKey, sum);
+            _httpContextAccessor.HttpContext.Session.SetInt32(_transactionRequestKey, totalAmount);
         }
 
-        public void CompleteTransaction(int sum)
+        public void CompleteTransaction(int priceAmount)
         {
-            _httpContextAccessor.HttpContext.Session.SetInt32(_transactionCompleteKey, sum);
+            _httpContextAccessor.HttpContext.Session.SetInt32(_transactionCompleteKey, priceAmount);
         }
 
-        public bool IsTransactionCompleted()
-        {
-            return _httpContextAccessor.HttpContext.Session.GetString(_transactionSessionKey) == "true";
-        }
-
-        public void EndTransaction()
+        public void RemoveTransaction()
         {
             _httpContextAccessor.HttpContext.Session.Remove(_transactionSessionKey);
             _httpContextAccessor.HttpContext.Session.Remove(_transactionRequestKey);

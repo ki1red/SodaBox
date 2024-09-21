@@ -24,7 +24,7 @@ namespace SodaBox.DataAccess.Repositories
         }
 
         // Добавление нового заказа
-        public async Task AddOrderAsync(DateTime orderDate, int totalAmount, List<(string brandName, string drinkName, int quantity, double price)> items)
+        public async Task AddOrderAsync(DateTime orderDate, int totalAmount, List<(string brandName, string drinkName, int quantity, int price)> items)
         {
             // Создаем новый объект Order
             var order = new Order

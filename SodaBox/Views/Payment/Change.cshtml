@@ -15,7 +15,9 @@
     </div>
 </div>
 
+<!-- Скроем сумму сдачи и список монет для использования в JS -->
 <div id="changeAmount" data-amount="@Model.change" style="display: none;"></div>
+<div id="changeCoins" data-coins='@Html.Raw(Json.Serialize(Model.coins))' style="display: none;"></div>
 
 <script src="~/js/change.js"></script>
 <link rel="stylesheet" href="~/css/change.css">

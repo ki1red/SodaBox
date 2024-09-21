@@ -1,32 +1,33 @@
 ﻿document.addEventListener("DOMContentLoaded", function () {
-    const amount = parseInt(document.getElementById("changeAmount").getAttribute("data-amount"), 10);
-    const denominations = [10, 5, 2, 1]; // Номиналы монет
+    const changeAmount = parseInt(document.getElementById("changeAmount").getAttribute("data-amount"), 10);
+    const changeCoinsJson = document.getElementById("changeCoins").getAttribute("data-coins");
+    const changeCoins = JSON.parse(changeCoinsJson); // Преобразуем строку JSON в объект
     const changeContainer = document.getElementById("changeContainer");
 
-    if (amount > 0) {
-        displayChange(change);
+    if (changeAmount > 0 && changeCoins) {
+        displayChange(changeCoins);
     }
 });
 
-function displayChange(change) {
+function displayChange(coins) {
     const changeContainer = document.getElementById("changeContainer");
     changeContainer.innerHTML = ''; // Очистить контейнер
 
-    for (let denom of Object.keys(change)) {
+    coins.forEach(coin => {
         const changeItem = document.createElement("div");
         changeItem.className = "change-item";
 
         // Создание элемента для изображения
         const img = document.createElement("img");
-        img.src = `/images/coins/${denom}.png`; // Путь к изображению монеты
-        img.alt = `${denom} руб.`;
-        img.style.width = '50px'; // Размеры изображения
+        img.src = `/${coin.imagePath}`; // Путь к изображению монеты из модели
+        img.alt = `${coin.price} руб.`;
+        img.style.width = '50px';
         img.style.height = '50px';
         img.style.marginRight = '10px';
 
         // Создание элемента для текста
         const text = document.createElement("span");
-        text.textContent = `${denom} руб. - ${change[denom]} шт.`;
+        text.textContent = `${coin.price} руб. - ${coin.quantity} шт.`; // Используем данные о номинале и количестве
 
         // Добавление изображения и текста в элемент
         changeItem.appendChild(img);
@@ -34,5 +35,5 @@ function displayChange(change) {
 
         // Добавление элемента в контейнер
         changeContainer.appendChild(changeItem);
-    }
+    });
 }

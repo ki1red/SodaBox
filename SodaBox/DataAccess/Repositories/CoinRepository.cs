@@ -47,7 +47,8 @@ namespace SodaBox.DataAccess.Repositories
             {
                 id = c.id,
                 price = c.price,
-                quantity = c.quantity
+                quantity = c.quantity,
+                imagePath = c.imagePath
             }).ToList();
 
             foreach (var coin in coinsSnapshot)
@@ -78,7 +79,8 @@ namespace SodaBox.DataAccess.Repositories
                         {
                             id = coin.id,
                             price = coin.price,
-                            quantity = coinsToTake
+                            quantity = coinsToTake,
+                            imagePath = coin.imagePath
                         });
                     }
                 }
@@ -103,10 +105,6 @@ namespace SodaBox.DataAccess.Repositories
 
             // Сохраняем изменения в БД
             await _context.SaveChangesAsync();
-            foreach (var coin in coinsToReturn)
-            {
-                Console.WriteLine($"{coin.id} {coin.price} {coin.quantity}");
-            }
             // Возвращаем список монет, которые выдаем в качестве сдачи
             return coinsToReturn;
         }

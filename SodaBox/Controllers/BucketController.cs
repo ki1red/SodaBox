@@ -21,11 +21,9 @@ namespace SodaBox.Controllers
         public IActionResult Bucket()
         {
             // Если оплата проводится, корзина не может быть доступна
-            if (_transactionService.IsTransactionCompleted())
-            {
-                if (_transactionService.completeSum != null)
-                    return RedirectToAction("Index", "Store");
-            }
+            if (_transactionService.isComplete)
+                return RedirectToAction("Index", "Store");
+            
 
             Response.Headers.Append("Cache-Control", "no-store");
             Response.Headers.Append("Pragma", "no-cache");

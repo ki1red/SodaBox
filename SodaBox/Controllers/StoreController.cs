@@ -43,7 +43,7 @@ public class StoreController : Controller
         //    // TODO нужно сделать обновление количества напитков в БД после покупки
         //}
 
-        _transactionService.EndTransaction();
+        _transactionService.RemoveTransaction();
 
         // Используем репозиторий для получения списка брендов и напитков
         var brands = await _brandRepository.GetAllBrandsAsync();
@@ -59,11 +59,7 @@ public class StoreController : Controller
 
     public async Task<IActionResult> Admin()
     {
-        if (_transactionService.IsTransactionCompleted())
-        {
-            return RedirectToAction("Index");
-        }
-        _transactionService.EndTransaction();
+        _transactionService.RemoveTransaction();
 
         var drinks = await _drinkRepository.GetAllDrinksAsync();
         var viewModel = new AdminViewModel
